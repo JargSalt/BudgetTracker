@@ -1,0 +1,75 @@
+.category {
+	position: relative;
+	padding: 0px;
+	border: 2px solid blue;
+	border-radius: 5px;
+	left: 20px;
+	width: calc(100% - 22px);
+	margin: 10px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+#containers{
+	position: relative;
+}
+
+.container{
+	display: inline-block;
+	position: relative;
+	border: solid;
+}
+
+#budget_display{
+	width: 70%;
+	
+}
+
+#aggregates{
+	position: absolute;
+	top:0px;
+	margin-left: 10px;
+	width: 25%;
+}
+
+
+.categoryName{
+	font-size: 24px;
+	font-family: sans-serif;
+}
+
+.categoryGoal {
+	position: absolute;
+	right: 200px;
+}
+
+.categoryAmount {
+	position: absolute;
+	right: 300px;
+}
+
+.categoryEdit {
+	position: absolute;
+	right: 10px;
+}
+
+button.addCategory {
+	display: block;
+	position: relative;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+button.categoryShowHide {
+	position: absolute;
+	right: 40px;
+	height: 31px;
+}
+
+.editButton,.deleteButton,.newButton {
+	padding: 0px;
+}
+
+img{
+	margin:0px;
+}
