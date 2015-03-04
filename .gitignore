@@ -43,3 +43,7 @@ Temporary Items
 .apdisk
 .settings/com.aptana.editor.php.prefs
 *.project
+/nbproject/private/
+nbproject/project.xml
+
+nbproject/project.properties
