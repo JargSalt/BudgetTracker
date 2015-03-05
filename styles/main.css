@@ -66,10 +66,6 @@ button.categoryShowHide {
 	height: 31px;
 }
 
-body {
-    background-color: red;
-}
-
 .editButton,.deleteButton,.newButton {
 	padding: 0px;
 }
