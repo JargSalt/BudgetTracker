@@ -60,12 +60,12 @@ sec_session_start();
 			  $transaction_amount = $transactions[$j]["transaction_amount"];
 			  $date = $transactions[$j]["date"];
 			  ?>
-			  <!-- This specifies the html for each -->
-				<tr class='transaction' id='trans-<?php echo $transaction_id?>' transaction_id="<?php echo $transaction_id?>" category_id="<?php echo $category_id?>" name='<?php echo $transaction_name?>' amount='<?php echo $transaction_amount ?>' date='<?php echo $date?>'>
+			  <!-- This specifies the HTML for each -->
+				<tr class='transaction' id='trans-<?php echo $transaction_id?>' transaction_id='<?php echo $transaction_id?>' category_id='<?php echo $category_id?>' name='<?php echo $transaction_name?>' amount='<?php echo $transaction_amount ?>' date='<?php echo $date?>'>
 					<td><?php echo $date?></td>
 					<td><?php echo $transaction_name ?></td>
 					<td>$<?php echo $transaction_amount; ?></td> 
-					<td><button class="editButton" onclick="alert('This should make all fields editable and/or show a form to edit the transaction')"><img src='resources/images/edit-icon.png' height='15px' /></button></td>
+					<td><button class="editButton" onclick="editTransaction(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></td>
 					<td><button class="deletButton" onclick="alert('This should delete the transaction')"><img src='resources/images/trashcan.png' height='15px' /></button></td>
 				</tr>
 			<?php endfor; ?>
@@ -101,5 +101,52 @@ sec_session_start();
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
         <?php endif; ?>
+            
+        <script>
+            function editTransaction(button) {
+                var parent = button.parentElement;
+                var row = parent.parentElement;
+                var transid = row.getAttribute("transaction_id");
+                var date = row.cells[0].innerHTML;
+                var name = row.cells[1].innerHTML;
+                var str = row.cells[2].innerHTML;
+                row.style.display = 'none';
+                var number = str.split("$");
+                var amount = number[1];
+                var table = row.parentElement;
+                var newrow = table.insertRow(row.rowIndex);
+                newrow.setAttribute("transaction_id", transid);
+                var cell1 = newrow.insertCell(0);
+                var cell2 = newrow.insertCell(1);
+                var cell3 = newrow.insertCell(2);
+                var cell4 = newrow.insertCell(3);
+                var cell5 = newrow.insertCell(4);
+                cell1.innerHTML = '<input id="date" type="text" value="'+date+'" required="required"/>';
+                cell2.innerHTML = '<input id="name" type="text" value="'+name+'" required="required"/>';
+                cell3.innerHTML = '<input id="amount" type="number" value="'+amount+'" step=".01" required="required"/>';
+                cell4.innerHTML = '<button class="saveButton" onclick="updateServer(this)"><img src="resources/images/checkmark.png" height="15px" /></button>';
+                cell5.innerHTML = '<button class="cancelButton" onclick="cancel()"><img src="resources/images/x.png" height="15px" /></button>';
+            }
+            
+            function updateServer(button) {
+                var date = document.getElementById('date').value;
+                var name = document.getElementById('name').value;
+                var amount = document.getElementById('amount').value;
+                var data = button.parentElement;
+                var row = data.parentElement;
+                var id = row.getAttribute("transaction_id");
+                var str = "date="+date+"&name="+name+"&amount="+amount+"&id="+id;
+                var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) 
+                    {
+                        row.innerHTML = xhr.responseText;
+                    }
+                };
+                xhr.open('POST','updateserver.php',true);
+                xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhr.send(str);
+            }
+        </script>
     </body>
 </html>
