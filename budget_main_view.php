@@ -149,6 +149,8 @@ sec_session_start();
             }
             
             function deleteTransaction(button) {
+                var confirm = window.confirm("Are you sure you want to delete this transaction?");
+                if (confirm === true) {
                 var cell1 = button.parentElement;
                 var row1 = cell1.parentElement;
                 var table1 = row1.parentElement;
@@ -165,6 +167,10 @@ sec_session_start();
                 xhr.open('POST','updateserver.php',true);
                 xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xhr.send(str1);
+                }
+                else {
+                }
+            
             }
         </script>
     </body>
