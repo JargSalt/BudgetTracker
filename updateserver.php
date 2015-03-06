@@ -5,7 +5,7 @@ include_once 'includes/functions.php';
 
 sec_session_start();
 
-    if(isset($_POST)) {
+    if(isset($_POST['button'])) {
         
     $date = strip_tags($_POST['date']);
     $name = strip_tags($_POST['name']);
@@ -27,7 +27,10 @@ sec_session_start();
         echo "Something went wrong.";
     }
     }
-    else {
-        echo "Didn't make it into POST";
+    elseif(isset($_POST['button1'])) {
+        $id1 = $_POST['id1'];
+        $data1 = "DELETE from transactions WHERE transaction_id='".$id1."'";
+        $query = mysqli_query($mysqli, $data1);
     }
+
 

@@ -65,8 +65,8 @@ sec_session_start();
 					<td><?php echo $date?></td>
 					<td><?php echo $transaction_name ?></td>
 					<td>$<?php echo $transaction_amount; ?></td> 
-					<td><button class="editButton" onclick="editTransaction(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></td>
-					<td><button class="deletButton" onclick="alert('This should delete the transaction')"><img src='resources/images/trashcan.png' height='15px' /></button></td>
+					<td><button class="editButton" name ='editButton' onclick="editTransaction(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></td>
+					<td><button class="deletButton" name='deleteButton' onclick="deleteTransaction(this)"><img src='resources/images/trashcan.png' height='15px' /></button></td>
 				</tr>
 			<?php endfor; ?>
 				<tr class='transaction'>
@@ -135,7 +135,7 @@ sec_session_start();
                 var data = button.parentElement;
                 var row = data.parentElement;
                 var id = row.getAttribute("transaction_id");
-                var str = "date="+date+"&name="+name+"&amount="+amount+"&id="+id;
+                var str = "date="+date+"&name="+name+"&amount="+amount+"&id="+id+"&button=true";
                 var xhr = new XMLHttpRequest();
                     xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) 
@@ -146,6 +146,25 @@ sec_session_start();
                 xhr.open('POST','updateserver.php',true);
                 xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
                 xhr.send(str);
+            }
+            
+            function deleteTransaction(button) {
+                var cell1 = button.parentElement;
+                var row1 = cell1.parentElement;
+                var table1 = row1.parentElement;
+                var id1 = row1.getAttribute("transaction_id");
+                var str1 = "id1="+id1+"&button1=true";
+                var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) 
+                    {
+                        table1.deleteRow(row1.rowIndex);
+                        
+                    }
+                };
+                xhr.open('POST','updateserver.php',true);
+                xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhr.send(str1);
             }
         </script>
     </body>
