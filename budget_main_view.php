@@ -15,13 +15,12 @@ sec_session_start();
     <body onload="orderCategories()">
 
         <?php if (login_check($mysqli) == true) : ?>
-            <p>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</p>
-            <p>Return to <a href="index.php">login page</a></p>
-            <h1>Budget</h1>
+            <div id='header'>
+                <span>Your Budget</span>    
+            </div>
             <div id="containers">
             <div class="container" id='budget_display'>
-
-
+                
 			<!-- Here all categories are fetched from the data base -->
             <?php 
             $categories =  get_categories($mysqli);
@@ -36,7 +35,7 @@ sec_session_start();
 				<!-- This specifies the html for each category -->		
 				<div class='category' id='ctg-<?php echo $category_id?>' category_id="<?php echo $category_id?>" parent_id='<?php echo $parent_id?>' name='<?php echo $category_name?>' goal='<?php echo $category_goal ?>'>
 					<span class="noHide">
-						<span onclick="alert('this should go to a category specific page')" class="categoryName"><?php echo $category_name?></span>
+                                            <span onclick="alert('this should go to a category specific page')" class="categoryName"><u><?php echo $category_name?></u></span>
 						<span class="categoryGoal">Goal: $<?php echo $category_goal ?></span> 
 						<span class="categoryAmount">Actual: $?</span>
 						<span class="categoryEdit"><button class="editButton" onclick="alert('This should make all fields editable and/or show a form to edit the category')"><img src='resources/images/edit-icon.png' height='20px' /></button></span>
@@ -50,9 +49,8 @@ sec_session_start();
 						</tr>
 						
 			<!-- Here a given category has all of its transactions loaded from the database -->			
-			 <?php
+			  <?php
 			  $transactions =  get_ctg_transactions($mysqli,$category_id);
-			  
 			  for($j = 0; $j < count($transactions); ++$j):
 			  $transaction_id = $transactions[$j]["transaction_id"];
 			  $category_id = $transactions[$j]["category_id"];
@@ -70,12 +68,10 @@ sec_session_start();
 				</tr>
 			<?php endfor; ?>
 				<tr class='transaction'>
-					<form>
-					<td><input name="date" type="text" placeholder="mm/dd/yyyy"required="required"/></td>
-					<td><input name="name" type="text" placeholder="Enter transaction name" required="required"/></td>
-					<td><input name="amount" type="number" step=".01" required="required"/></td> 
-					<td><button class="newButton" onclick="alert('TODO: this should validate then add the transaction')"><img src='resources/images/plus.png' height='15px' /></button></td>
-					</form>
+					<td><input id="adddate" name="adddate" type="text"/></td>
+					<td><input id="addname" name="addname" type="text"/></td>
+                                        <td><input id="addamount" name="addamount" type="number" step=".01"/></td> 
+					<td><button class="newButton" onclick="addTransaction(this)"><img src='resources/images/plus.png' height='15px' /></button></td>
 				</tr>
 					</table>
 					<span class="endOfCtg">
@@ -85,7 +81,7 @@ sec_session_start();
 			<?php  endfor;?>
 			</div>
 			<div class="container" id="aggregates">
-				<h1>This months info</h1>
+				<h1>This Months Info:</h1>
 				<ul>
 					<li>Total budget:</li>
 					<li>Total spent:</li>
@@ -121,17 +117,17 @@ sec_session_start();
                 var cell3 = newrow.insertCell(2);
                 var cell4 = newrow.insertCell(3);
                 var cell5 = newrow.insertCell(4);
-                cell1.innerHTML = '<input id="date" type="text" value="'+date+'" required="required"/>';
-                cell2.innerHTML = '<input id="name" type="text" value="'+name+'" required="required"/>';
-                cell3.innerHTML = '<input id="amount" type="number" value="'+amount+'" step=".01" required="required"/>';
+                cell1.innerHTML = '<input id="edate" type="text" value="'+date+'" required="required"/>';
+                cell2.innerHTML = '<input id="ename" type="text" value="'+name+'" required="required"/>';
+                cell3.innerHTML = '<input id="eamount" type="number" value="'+amount+'" step=".01" required="required"/>';
                 cell4.innerHTML = '<button class="saveButton" onclick="updateServer(this)"><img src="resources/images/checkmark.png" height="15px" /></button>';
                 cell5.innerHTML = '<button class="cancelButton" onclick="cancel()"><img src="resources/images/x.png" height="15px" /></button>';
             }
             
             function updateServer(button) {
-                var date = document.getElementById('date').value;
-                var name = document.getElementById('name').value;
-                var amount = document.getElementById('amount').value;
+                var date = document.getElementById('edate').value;
+                var name = document.getElementById('ename').value;
+                var amount = document.getElementById('eamount').value;
                 var data = button.parentElement;
                 var row = data.parentElement;
                 var id = row.getAttribute("transaction_id");
@@ -171,6 +167,76 @@ sec_session_start();
                 else {
                 }
             
+            }
+            
+            function addTransaction(button) {
+                var buttondata = button.parentElement;
+                var buttonrow = buttondata.parentElement;
+                var date = buttonrow.cells[0].firstChild.value;
+                var name = buttonrow.cells[1].firstChild.value;
+                var amount = buttonrow.cells[2].firstChild.value;
+                var buttonindex = buttonrow.rowIndex;
+                var categoryinfo = buttonrow.previousElementSibling;
+                var categorytable = categoryinfo.parentElement;
+                if (buttonindex > 1) { //If a transaction already exists, run this code
+                    var clonerow = categoryinfo.cloneNode(true);
+                    clonerow.cells[0].innerHTML = date;
+                    clonerow.cells[1].innerHTML = name;
+                    clonerow.cells[2].innerHTML = "$"+amount;
+                    categorytable.insertBefore(clonerow,categorytable.children[buttonindex]);
+                    clonerow.setAttribute("date", date);
+                    clonerow.setAttribute("name", name);
+                    clonerow.setAttribute("amount", amount);
+                    var catid = clonerow.getAttribute("category_id");
+                    var userid = <?php echo $_SESSION['user_id']; ?>;
+                    var requestString = "date="+date+"&name="+name+"&amount="+amount+"&catid="+catid+"&userid="+userid+"&button2=true";
+                    var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) 
+                        {
+                            var transid = xhr.responseText;
+                            var idString = "trans-"+transid;
+                            clonerow.setAttribute("transaction_id",transid);
+                            clonerow.setAttribute("id",idString);
+                        }
+                    };
+                    xhr.open('POST','updateserver.php',true);
+                    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                    xhr.send(requestString);
+                }
+                else { //If a transaction does not already exist for the category, run this code
+                    var transactiontable = categorytable.parentElement;
+                    var category = transactiontable.parentElement;
+                    var catid = category.getAttribute("category_id");
+                    var newrow = transactiontable.insertRow(buttonindex);
+                    var cell1 = newrow.insertCell(0);
+                    var cell2 = newrow.insertCell(1);
+                    var cell3 = newrow.insertCell(2);
+                    var cell4 = newrow.insertCell(3);
+                    var cell5 = newrow.insertCell(4);
+                    var userid = <?php echo $_SESSION['user_id']; ?>;
+                    var requestString = "date="+date+"&name="+name+"&amount="+amount+"&catid="+catid+"&userid="+userid+"&button2=true";
+                    var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) 
+                        {
+                            var transid = xhr.responseText;
+                            var idString = "trans-"+transid;
+                            newrow.setAttribute("category_id",catid);
+                            newrow.setAttribute("transaction_id",transid);
+                            newrow.setAttribute("id",idString);
+                            cell1.innerHTML = date;
+                            cell2.innerHTML = name;
+                            cell3.innerHTML = amount;
+                            cell4.innerHTML = "<button class='editButton' name ='editButton' onclick='editTransaction(this)'><img src='resources/images/edit-icon.png' height='15px' /></button>";
+                            cell5.innerHTML = "<button class='deletButton' name='deleteButton' onclick='deleteTransaction(this)'><img src='resources/images/trashcan.png' height='15px' /></button>";
+                        }
+                    };
+                    xhr.open('POST','updateserver.php',true);
+                    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                    xhr.send(requestString);
+                }
+                
             }
         </script>
     </body>
