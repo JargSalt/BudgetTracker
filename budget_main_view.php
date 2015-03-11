@@ -75,7 +75,7 @@ sec_session_start();
 				</tr>
 					</table>
 					<span class="endOfCtg">
-					<button class="addCategory" onclick="alert('this should show a form for creating a new subcategory')">Add subcategory</button>
+					<button class="addCategory" onclick="addCategoryOptions(this)">Add Subcategory</button>
 					</span>
 				</div>
 			<?php  endfor;?>
@@ -238,6 +238,70 @@ sec_session_start();
                 }
                 
             }
+            
+            function addCategoryOptions(button) {
+                var parent = button.parentElement;
+                parent.innerHTML = "Name: <input type='text' id='newcatname' name='name'> Goal: <input type='number' id='newcatgoal' name='goal'>"+
+                                    "    <button id='save' class='saveButton' onclick='addCat(this)'><img src='resources/images/checkmark.png' height='15px'/></button>"+
+                                     "    <button id='cancel' class='cancelButton' onclick='cancelCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+            }
+            
+            function addCat(button) {
+                var parent = button.parentElement;
+                var div = parent.parentElement;
+                var parid = div.getAttribute("category_id");
+                var userid = <?php echo $_SESSION['user_id']; ?>;
+                var name = document.getElementById("newcatname").value;
+                var goal = document.getElementById("newcatgoal").value;
+                var requestString = "name="+name+"&goal="+goal+"&parid="+parid+"&userid="+userid+"&button=true";
+                var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) 
+                    {
+                        var newdiv = document.createElement("div");
+                        newdiv.setAttribute("class","category");
+                        newdiv.setAttribute("id","ctg-"+xhr.responseText);
+                        newdiv.setAttribute("category_id", xhr.responseText);
+                        newdiv.setAttribute("parent_id",parid);
+                        newdiv.setAttribute("name",name);
+                        newdiv.setAttribute("goal",goal);
+                        div.appendChild(newdiv);
+                        newdiv.innerHTML = "<span class='noHide'>"+
+                "<span onclick='alert(\"this should go to a category specific page\")' class='categoryName'><u>"+name+"</u></span>"+
+                    "<span class='categoryGoal'>Goal: $"+goal+"</span>"+ 
+                        "<span class='categoryAmount'>Actual: $?</span>"+
+                            "<span class='categoryEdit'><button class='editButton' onclick='alert(\"This should make all fields editable and/or show a form to edit the category\")'><img src='resources/images/edit-icon.png' height='20px' /></button></span>"+
+                                "<button class='categoryShowHide' onclick='showHideCategory('ctg-"+xhr.responseText+"')'>show/hide details</button>"+
+                                    "</span>"+
+					"<table class='transaction_table' id='ttbl-"+xhr.responseText+"'>"+
+                                            "<tr>"+
+						"<th name='date' onclick='alert('sort by date')'>Date</th>"+
+                                                    "<th name='name' onclick='alert('sort by name')'>Name</th>"+
+							"<th name='amount' onclick='alert('sort by amount')'>Amount</th>"+
+                                                            "</tr>"+
+                "<tr class='transaction'>"+
+                    "<td><input id='adddate' name='adddate' type='text'/></td>"+
+                        "<td><input id='addname' name='addname' type='text'/></td>"+
+                            "<td><input id='addamount' name='addamount' type='number' step='.01'/></td>"+ 
+                                "<td><button class='newButton' onclick='addTransaction(this)'><img src='resources/images/plus.png' height='15px' /></button></td>"+
+                                    "</tr>"+
+					"</table>"+
+                                            "<span class='endOfCtg'>"+
+                                                "<button class='addCategory' onclick='addCategoryOptions(this)'>Add Subcategory</button>"+
+                                                    "</span>";  
+                    }
+                };
+                xhr.open('POST','addcategory.php',true);
+                xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhr.send(requestString);
+            }
+            
+            function cancelCat(button) {
+                var parent = button.parentElement;
+                parent.innerHTML = "<button class='addCategory' onclick='addCategoryOptions(this)'>Add Subcategory</button>";
+            }
+            
+            
         </script>
     </body>
 </html>

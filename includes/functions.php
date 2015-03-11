@@ -194,7 +194,7 @@ function get_categories($mysqli){
 	//prepare query
 	$stmt = $mysqli->prepare("SELECT `category_ID`, `parent_ID`, `category_name`, `category_goal` FROM `categories` WHERE `user_id` = ? order by category_name");
 	$stmt->bind_param('i', $user_id);//use bind_param for better security from sql injections and such
-    $stmt->execute();   // Execute the prepared query.
+        $stmt->execute();   // Execute the prepared query.
 	$stmt->bind_result($category_id, $parent_id, $category_name, $category_goal);
 	$result_array = [];
 	$i = 0;
