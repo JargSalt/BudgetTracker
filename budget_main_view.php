@@ -71,7 +71,7 @@ sec_session_start();
 					<td><input id="adddate" name="adddate" type="text"/></td>
 					<td><input id="addname" name="addname" type="text"/></td>
                                         <td><input id="addamount" name="addamount" type="number" step=".01"/></td> 
-					<td><button class="newButton" onclick="addTransaction(this)"><img src='resources/images/plus.png' height='15px' /></button></td>
+					<td><button class="newButton" onclick="if(validateTransaction(this)){addTransaction(this);}"><img src='resources/images/plus.png' height='15px' /></button></td>
 				</tr>
 					</table>
 					<span class="endOfCtg">
@@ -120,10 +120,10 @@ sec_session_start();
                 var cell3 = newrow.insertCell(2);
                 var cell4 = newrow.insertCell(3);
                 var cell5 = newrow.insertCell(4);
-                cell1.innerHTML = '<input class="date" id="edate" type="text" value="'+date+'" required="required"/>';
-                cell2.innerHTML = '<input class="name" id="ename" type="text" value="'+name+'" required="required"/>';
-                cell3.innerHTML = '<input id="eamount" type="number" value="'+amount+'" step=".01" required="required"/>';
-                cell4.innerHTML = '<button class="saveButton" onclick="updateServer(this)"><img src="resources/images/checkmark.png" height="15px" /></button>';
+                cell1.innerHTML = '<input name="date" class="date" id="edate" type="text" value="'+date+'" placeholder="yyyy-mm-dd"/>';
+                cell2.innerHTML = '<input name="transaction name" class="name" id="ename" type="text" value="'+name+'" required="required"/>';
+                cell3.innerHTML = '<input name="amount" id="eamount" type="number" value="'+amount+'" step=".01" required="required"/>';
+                cell4.innerHTML = '<button class="saveButton" onclick="submitEditTransaction(this)"><img src="resources/images/checkmark.png" height="15px" /></button>';
                 cell5.innerHTML = '<button class="cancelButton" onclick="cancelTransEdit()"><img src="resources/images/x.png" height="15px" /></button>';
             }
             function cancelTransEdit(){
@@ -307,6 +307,7 @@ sec_session_start();
                 var parent = button.parentElement;
                 parent.innerHTML = "<button class='addCategory' onclick='addCategoryOptions(this)'>Add Subcategory</button>";
             }
+         
             
             
         </script>
