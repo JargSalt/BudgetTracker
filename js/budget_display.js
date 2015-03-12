@@ -294,13 +294,7 @@ function cancelCat(button) {
 
 function showCatForm(button) {
 	var parent = button.parentElement;
-	parent.innerHTML = "Name: <input type='text' id='bigcatname' name='name'><br> Goal: <input type='number' id='bigcatgoal' name='goal'><br><br>" + "    <button id='save' class='saveButton' onclick='addBigCat(this)'><img src='resources/images/checkmark.png' height='15px'/></button>" + "    <button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
-}
-
-function addBigCat(button) {
-	var name = document.getElementById("bigcatname").value;
-	var goal = document.getElementById("bigcatgoal").value;
-	var requestString = "name=" + name + "&goal=" + goal + "&parid=" + 0 + "&button=true";
+	parent.innerHTML = "<form method='POST' action='addcategory.php'>Name: <input type='text' id='bigcatname' name='name'><br> Goal: <input type='number' id='bigcatgoal' name='goal'><br><br>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat()'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
 ;
