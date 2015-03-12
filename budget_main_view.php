@@ -99,9 +99,12 @@ sec_session_start();
         <?php endif; ?>
             
         <script>
+        var _editRow;
+        var newrow;
             function editTransaction(button) {
                 var parent = button.parentElement;
                 var row = parent.parentElement;
+                _editRow = row;
                 var transid = row.getAttribute("transaction_id");
                 var date = row.cells[0].innerHTML;
                 var name = row.cells[1].innerHTML;
@@ -110,18 +113,22 @@ sec_session_start();
                 var number = str.split("$");
                 var amount = number[1];
                 var table = row.parentElement;
-                var newrow = table.insertRow(row.rowIndex);
+                newrow = table.insertRow(row.rowIndex);
                 newrow.setAttribute("transaction_id", transid);
                 var cell1 = newrow.insertCell(0);
                 var cell2 = newrow.insertCell(1);
                 var cell3 = newrow.insertCell(2);
                 var cell4 = newrow.insertCell(3);
                 var cell5 = newrow.insertCell(4);
-                cell1.innerHTML = '<input id="edate" type="text" value="'+date+'" required="required"/>';
-                cell2.innerHTML = '<input id="ename" type="text" value="'+name+'" required="required"/>';
+                cell1.innerHTML = '<input class="date" id="edate" type="text" value="'+date+'" required="required"/>';
+                cell2.innerHTML = '<input class="name" id="ename" type="text" value="'+name+'" required="required"/>';
                 cell3.innerHTML = '<input id="eamount" type="number" value="'+amount+'" step=".01" required="required"/>';
                 cell4.innerHTML = '<button class="saveButton" onclick="updateServer(this)"><img src="resources/images/checkmark.png" height="15px" /></button>';
-                cell5.innerHTML = '<button class="cancelButton" onclick="cancel()"><img src="resources/images/x.png" height="15px" /></button>';
+                cell5.innerHTML = '<button class="cancelButton" onclick="cancelTransEdit()"><img src="resources/images/x.png" height="15px" /></button>';
+            }
+            function cancelTransEdit(){
+            	_editRow.style.display = '';
+            	newrow.parentNode.removeChild(newrow);
             }
             
             function updateServer(button) {
