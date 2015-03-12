@@ -99,12 +99,12 @@ sec_session_start();
         <?php endif; ?>
             
         <script>
-        var _editRow;
-        var newrow;
+        var _editRow = [];
+        var _newrow = [];
             function editTransaction(button) {
                 var parent = button.parentElement;
                 var row = parent.parentElement;
-                _editRow = row;
+                _editRow[row.getAttribute('transaction_id')] = row;
                 var transid = row.getAttribute("transaction_id");
                 var date = row.cells[0].innerHTML;
                 var name = row.cells[1].innerHTML;
@@ -113,7 +113,7 @@ sec_session_start();
                 var number = str.split("$");
                 var amount = number[1];
                 var table = row.parentElement;
-                newrow = table.insertRow(row.rowIndex);
+                var newrow = table.insertRow(row.rowIndex);
                 newrow.setAttribute("transaction_id", transid);
                 var cell1 = newrow.insertCell(0);
                 var cell2 = newrow.insertCell(1);
@@ -124,11 +124,13 @@ sec_session_start();
                 cell2.innerHTML = '<input name="transaction name" class="name" id="ename" type="text" value="'+name+'" required="required"/>';
                 cell3.innerHTML = '<input name="amount" id="eamount" type="number" value="'+amount+'" step=".01" required="required"/>';
                 cell4.innerHTML = '<button class="saveButton" onclick="submitEditTransaction(this)"><img src="resources/images/checkmark.png" height="15px" /></button>';
-                cell5.innerHTML = '<button class="cancelButton" onclick="cancelTransEdit()"><img src="resources/images/x.png" height="15px" /></button>';
+                cell5.innerHTML = '<button class="cancelButton" onclick="cancelTransEdit(this)"><img src="resources/images/x.png" height="15px" /></button>';
+                _newrow[row.getAttribute('transaction_id')] = newrow;
             }
-            function cancelTransEdit(){
-            	_editRow.style.display = '';
-            	newrow.parentNode.removeChild(newrow);
+            function cancelTransEdit(button){
+            	trans_id = button.parentElement.parentElement.getAttribute('transaction_id');
+            	_editRow[trans_id].style.display = '';
+            	_newrow[trans_id].parentNode.removeChild(_newrow[trans_id]);
             }
             
             function updateServer(button) {
