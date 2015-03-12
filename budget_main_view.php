@@ -68,10 +68,10 @@ sec_session_start();
 				</tr>
 			<?php endfor; ?>
 				<tr class='transaction'>
-					<td><input id="adddate" name="adddate" type="text"/></td>
-					<td><input id="addname" name="addname" type="text"/></td>
-                                        <td><input id="addamount" name="addamount" type="number" step=".01"/></td> 
-					<td><button class="newButton" onclick="if(validateTransaction(this)){addTransaction(this);}"><img src='resources/images/plus.png' height='15px' /></button></td>
+					<td><input class="date" id="adddate" name="adddate" type="text"/></td>
+					<td><input class="name" id="addname" name="addname" type="text"/></td>
+                    <td><input class="amount" id="addamount" name="addamount" type="text" step=".01"/></td> 
+					<td><button class="newButton" onclick="submitNewTransaction(this);"><img src='resources/images/plus.png' height='15px' /></button></td>
 				</tr>
 					</table>
 					<span class="endOfCtg">
@@ -181,6 +181,7 @@ sec_session_start();
             function addTransaction(button) {
                 var buttondata = button.parentElement;
                 var buttonrow = buttondata.parentElement;
+                var tbody = buttonrow.parentElement;
                 var date = buttonrow.cells[0].firstChild.value;
                 var name = buttonrow.cells[1].firstChild.value;
                 var amount = buttonrow.cells[2].firstChild.value;
@@ -203,10 +204,11 @@ sec_session_start();
                         xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) 
                         {
-                            var transid = xhr.responseText;
+                        	tbody.innerHTML = xhr.responseText;
+                            /*var transid = xhr.responseText;
                             var idString = "trans-"+transid;
                             clonerow.setAttribute("transaction_id",transid);
-                            clonerow.setAttribute("id",idString);
+                            clonerow.setAttribute("id",idString);*/
                         }
                     };
                     xhr.open('POST','updateserver.php',true);

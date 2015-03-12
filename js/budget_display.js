@@ -100,7 +100,7 @@ function validateChildren(element) {
 	return isValid;
 }
 
-function submitTransaction(that) {
+function submitNewTransaction(that) {
 	if (validateTransaction(that)) {
 		addTransaction(that);
 	}

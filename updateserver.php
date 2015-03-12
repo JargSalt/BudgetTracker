@@ -68,6 +68,40 @@ sec_session_start();
 		$stmt->bind_param('ssdii', $date1,$name1, $amount1,$catid1,$userid1);
         if($stmt->execute()){
 		
+		
+		
+		 $transactions =  get_ctg_transactions($mysqli,$catid1);
+			  for($j = 0; $j < count($transactions); ++$j):
+			  $transaction_id = $transactions[$j]["transaction_id"];
+			  $category_id = $transactions[$j]["category_id"];
+			  $transaction_name = $transactions[$j]["transaction_name"];
+			  $transaction_amount = $transactions[$j]["transaction_amount"];
+			  $date = $transactions[$j]["date"];
+			  ?>
+			  <!-- This specifies the HTML for each -->
+				<tr class='transaction' id='trans-<?php echo $transaction_id?>' transaction_id='<?php echo $transaction_id?>' category_id='<?php echo $category_id?>' name='<?php echo $transaction_name?>' amount='<?php echo $transaction_amount ?>' date='<?php echo $date?>'>
+					<td><?php echo $date?></td>
+					<td><?php echo $transaction_name ?></td>
+					<td>$<?php echo $transaction_amount; ?></td> 
+					<td><button class="editButton" name ='editButton' onclick="editTransaction(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></td>
+					<td><button class="deletButton" name='deleteButton' onclick="deleteTransaction(this)"><img src='resources/images/trashcan.png' height='15px' /></button></td>
+				</tr>
+			<?php endfor; ?>
+				<tr class='transaction'>
+					<td><input id="adddate" name="adddate" type="text"/></td>
+					<td><input id="addname" name="addname" type="text"/></td>
+                                        <td><input id="addamount" name="addamount" type="number" step=".01"/></td> 
+					<td><button class="newButton" onclick="if(validateTransaction(this)){addTransaction(this);}"><img src='resources/images/plus.png' height='15px' /></button></td>
+				</tr>
+					</table>
+					<span class="endOfCtg">
+					<button class="addCategory" onclick="addCategoryOptions(this)">Add Subcategory</button>
+					</span>
+				</div>
+			<?php 
+		
+		
+		
 		//TODO: FIX WHAT HAPPENS NEXT. currently if the new item has same name and amount as an existing transaction it will behave wrong
 		/*$id_select = $mysqli->prepare("SELECT * FROM transactions WHERE transaction_name=? AND transaction_amount= ? AND user_id = ?");
 		$id_select->bind_param('sdi',$name1,$amount1,$userid1);
@@ -83,7 +117,7 @@ sec_session_start();
             }*/
 		}
             $stmt->close();
-            $id_select->close();
+           // $id_select->close();
     }  else {
         echo "Something went wrong";
     }
