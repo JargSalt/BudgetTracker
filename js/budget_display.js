@@ -297,5 +297,29 @@ function showCatForm(button) {
 	parent.innerHTML = "<form method='POST' action='addcategory.php'>Name: <input type='text' id='bigcatname' name='name'><br> Goal: <input type='number' id='bigcatgoal' name='goal'><br><br>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat()'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
+function getCategoryTotals(){
+	categories = document.getElementsByClassName("category");
+	for(var i = 0; i < categories.length; ++i){
+		getCategoryTotal(categories[i]);
+	}
+}
+
+function getCategoryTotal(category){
+	var total = 0;
+	var ttables = category.getElementsByTagName("TABLE");
+	for(var i = 0; i < ttables.length; ++i){
+		var transactions =  ttables[i].getElementsByClassName("transaction");
+		for(var j = 0; j < transactions.length; ++j){
+		var transaction = ttables[i].getElementsByClassName("transaction")[j];
+		if(transaction.hasAttribute("amount")){
+			total += parseFloat(transaction.getAttribute("amount"));
+			}
+		}
+	}
+	var amount = category.getElementsByClassName("categoryAmount");
+	amount[0].innerHTML= "Actual: $" + Number(total.toFixed(2));
+	
+}
+
 ;
 

@@ -12,7 +12,7 @@ sec_session_start();
         <link rel="stylesheet" href="styles/main.css" />
         <script src="js/budget_display.js"></script>
     </head>
-    <body onload="orderCategories()">
+    <body onload="orderCategories(); getCategoryTotals();">
 
         <?php if (login_check($mysqli) == true) : ?>
             <div id='header'>
