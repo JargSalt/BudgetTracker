@@ -6,7 +6,7 @@ include_once 'includes/functions.php';
 sec_session_start();
  if (login_check($mysqli) == true){
  	
-	$user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id'];
 
     if(isset($_POST['button'])) {	
     $date = strip_tags($_POST['date']);

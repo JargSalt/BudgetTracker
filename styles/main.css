@@ -19,6 +19,24 @@ body {
     width: 300px;
 }
 
+#containers #newcategory {
+    position: absolute;
+    color: green;
+    height: 100px;
+    width: 325px;
+    text-align: center;
+    background-color: white;
+    left: 925px;
+    top: 275px;
+}
+
+button.random {
+    position: relative;
+    height: 50px;
+    width: 200px;
+    top: 23px;
+}
+
 .container {
     position: relative;
     border: solid white;
