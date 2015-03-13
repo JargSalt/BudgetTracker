@@ -37,9 +37,6 @@ if (login_check($mysqli) == true) {
         $stmt->close();
     } elseif (isset($_POST['button1'])) {//delete a transaction
         $id1 = $_POST['id1'];
-        /* $data1 = "DELETE from transactions WHERE transaction_id='".$id1."'";
-          $query1 = mysqli_query($mysqli, $data1); */
-
         $stmt = $mysqli->prepare("DELETE from transactions WHERE transaction_id= ? AND user_id = ?");
         $stmt->bind_param('ii', $id1, $user_id);
         $stmt->execute();
@@ -63,10 +60,14 @@ if (login_check($mysqli) == true) {
         $stmt = $mysqli->prepare("INSERT INTO transactions (date,transaction_name,transaction_amount,category_id,user_id) VALUES (?,?,?,?,?)");
         $stmt->bind_param('ssdii', $date1, $name1, $amount1, $catid1, $userid1);
         if ($stmt->execute()) {
+            ?>
+                <tr>
+                    <th name="date" onclick="alert('sort by date')">Date</th>
+                    <th name="name" onclick="alert('sort by name')">Name</th>
+                    <th name="amount" onclick="alert('sort by amount')">Amount</th>
+		</tr>
 
-
-
-            $transactions = get_ctg_transactions($mysqli, $catid1);
+            <?php $transactions = get_ctg_transactions($mysqli, $catid1);
             for ($j = 0; $j < count($transactions); ++$j):
                 $transaction_id = $transactions[$j]["transaction_id"];
                 $category_id = $transactions[$j]["category_id"];
@@ -92,9 +93,7 @@ if (login_check($mysqli) == true) {
                                                             }"><img src='resources/images/plus.png' height='15px' /></button></td>
             </tr>
             </table>
-            <span class="endOfCtg">
-                <button class="addCategory" onclick="addCategoryOptions(this)">Add Subcategory</button>
-            </span>
+
             </div>
             <?php
             //TODO: FIX WHAT HAPPENS NEXT. currently if the new item has same name and amount as an existing transaction it will behave wrong
@@ -118,20 +117,9 @@ if (login_check($mysqli) == true) {
     }
     if (isset($_POST['button4'])) {
         $catid = strip_tags($_POST['catid']);
-        $stmt = $mysqli->prepare("DELETE FROM categories WHERE category_ID=?");
-        $stmt->bind_param('i', $catid);
-        if ($stmt->execute()) {
-            $stmt2 = $mysqli->prepare("DELETE FROM categories WHERE parent_ID=?");
-            $stmt2->bind_param('i', $catid);
-            if ($stmt2->execute()) {
-                echo "1";
-            } else {
-                echo "0";
-            }
-            $stmt2->close();
-        }
-        $stmt->close();
+        deleteCategory($catid, $mysqli);
     }
+    
 } else {
     echo "login check failed";
     header("Location: ../index.php");

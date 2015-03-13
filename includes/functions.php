@@ -342,11 +342,11 @@ function createStaticPage($user_id, $mysqli){
 	$stmt = $mysqli->prepare("SELECT `unique_id` FROM `shared_urls` WHERE `user_id` = ?");
 	$stmt->bind_param("i",$user_id);
 	$stmt->execute(); 
-    $stmt->bind_result($unique_id);
-    if($stmt->fetch()){
-    	return $unique_id;
-    }else{
-    $stmt->close();
+        $stmt->bind_result($unique_id);
+        if($stmt->fetch()){
+            return $unique_id;
+        }else{
+        $stmt->close();
 	$unique_id = uniqid('',true);
 	$stmt = $mysqli->prepare("INSERT INTO `shared_urls`(`unique_id`, `user_id`) VALUES (?,?)");
 	$stmt->bind_param("si", $unique_id, $user_id);
@@ -357,5 +357,58 @@ function createStaticPage($user_id, $mysqli){
 		return false;
 	}
 	}
+}
+
+function deleteCategory($categoryDeleteId, $mysqli) {
+        $response = "1";
+        echo "Deleting Category".$categoryDeleteId."<br>";
+        $stmt = $mysqli->prepare("DELETE FROM categories WHERE category_ID=?");
+        $stmt->bind_param('i', $categoryDeleteId);
+        $stmt2 = $mysqli->prepare("DELETE FROM transactions WHERE category_id=?");
+        $stmt2->bind_param('i', $categoryDeleteId);
+        if ($stmt->execute()) {
+            echo "Succesfully deleted category".$categoryDeleteId."<br>";
+            if ($stmt2->execute()) {
+                echo "Succesfully delete transactions from category".$categoryDeleteId."<br>";
+            $stmt3 = $mysqli->prepare("SELECT category_ID FROM categories WHERE parent_ID =?");
+            $stmt3->bind_param('i', $categoryDeleteId);
+            $stmt3->execute();
+            $stmt3->bind_result($childid);
+            $children = array();
+            $i = 0;
+            while ($stmt3->fetch()) {
+               
+              //  deleteCategory($childid,$mysqli);
+                $children[$i] = $childid;
+                ++$i;
+            }
+            $stmt3->close();
+            $stmt->close();
+            $stmt2->close();
+            
+            for($j = 0; $j < $i; ++$j){
+                 echo "Calling delete category on".$categoryDeleteId."<br>";
+                 if (deleteCategory( $children[$j] ,$mysqli)=="0") {
+                 $reponse = "0";
+                 }
+
+            }
+            
+            }
+            
+            else {
+                echo "Could not delete transaction".$categoryDeleteId."<br>";
+                $response = "0";
+                $stmt->close();
+                $stmt2->close();
+            }
+        }
+        else {
+            $stmt->close();
+            $stmt2->close();
+            $response = "0";
+            echo "Could not delete category".$categoryDeleteId."<br>";
+        }
+        return $response;       
 }
 ?>

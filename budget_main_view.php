@@ -24,7 +24,7 @@ sec_session_start();
             </div>
             <div id="containers">
             <div class="container" id='budget_display'>
-                
+          
 			<!-- Here all categories are fetched from the data base -->
             <?php 
             $categories =  get_categories($mysqli);
@@ -80,7 +80,7 @@ sec_session_start();
 				</tr>
 					</table>
 					<span class="endOfCtg">
-					<button class="addCategory" onclick="addCategoryOptions(this)">Add Subcategory</button>
+					<button class="addCategory" onclick="showSubCatForm(this)">Add Subcategory</button>
 					</span>
 				</div>
 			<?php  endfor; ?>
