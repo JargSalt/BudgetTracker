@@ -361,15 +361,12 @@ function createStaticPage($user_id, $mysqli){
 
 function deleteCategory($categoryDeleteId, $mysqli) {
         $response = "1";
-        echo "Deleting Category".$categoryDeleteId."<br>";
         $stmt = $mysqli->prepare("DELETE FROM categories WHERE category_ID=?");
         $stmt->bind_param('i', $categoryDeleteId);
         $stmt2 = $mysqli->prepare("DELETE FROM transactions WHERE category_id=?");
         $stmt2->bind_param('i', $categoryDeleteId);
         if ($stmt->execute()) {
-            echo "Succesfully deleted category".$categoryDeleteId."<br>";
             if ($stmt2->execute()) {
-                echo "Succesfully delete transactions from category".$categoryDeleteId."<br>";
             $stmt3 = $mysqli->prepare("SELECT category_ID FROM categories WHERE parent_ID =?");
             $stmt3->bind_param('i', $categoryDeleteId);
             $stmt3->execute();
@@ -387,7 +384,6 @@ function deleteCategory($categoryDeleteId, $mysqli) {
             $stmt2->close();
             
             for($j = 0; $j < $i; ++$j){
-                 echo "Calling delete category on".$categoryDeleteId."<br>";
                  if (deleteCategory( $children[$j] ,$mysqli)=="0") {
                  $reponse = "0";
                  }
@@ -397,7 +393,6 @@ function deleteCategory($categoryDeleteId, $mysqli) {
             }
             
             else {
-                echo "Could not delete transaction".$categoryDeleteId."<br>";
                 $response = "0";
                 $stmt->close();
                 $stmt2->close();
@@ -407,7 +402,6 @@ function deleteCategory($categoryDeleteId, $mysqli) {
             $stmt->close();
             $stmt2->close();
             $response = "0";
-            echo "Could not delete category".$categoryDeleteId."<br>";
         }
         return $response;       
 }

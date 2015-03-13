@@ -227,7 +227,7 @@ function showSubCatForm(button) {
 	var parent = button.parentElement;
         var category = parent.parentElement;
         var catid = category.getAttribute("category_id");
-	parent.innerHTML = "<form method='POST' action='addcategory.php' style='display:inline'><input type='hidden' name='catid' value='"+catid+"'> Name: <input type='text' id='newcatname' name='name'> Goal: <input type='number' id='newcatgoal' name='goal'>" + "    <button id='save' class='saveButton' name='save'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "    <button id='cancel' class='cancelButton' onclick='cancelCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+	parent.innerHTML = "<form method='POST' action='addcategory.php' style='display:inline'><input type='hidden' name='catid' value='"+catid+"'> Name: <input type='text' id='"+catid+"-newcatname' name='"+catid+"-name'> Goal: <input type='number' id='"+catid+"-newcatgoal' name='"+catid+"-goal'>" + "    <button id='save' class='saveButton' name='save'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "    <button id='cancel' class='cancelButton' onclick='cancelCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
 function addCat(button) {
@@ -266,7 +266,7 @@ function cancelCat(button) {
 function showCatForm(button) {
 	var parent = button.parentElement;
         var catid = 0;
-	parent.innerHTML = "<form method='POST' style='display:inline' action='addcategory.php'><input type='hidden' name='catid' value='"+catid+"'><p>Name: <input type='text' id='bigcatname' name='name'></p> <p>Goal: <input type='number' id='bigcatgoal' name='goal'></p>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+	parent.innerHTML = "<form method='POST' style='display:inline' action='addcategory.php'><input type='hidden' name='catid' value='"+catid+"'><p>Name: <input type='text' id='"+catid+"-bigcatname' name='"+catid+"-name'></p> <p>Goal: <input type='number' id='"+catid+"-bigcatgoal' name='"+catid+"-goal'></p>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
 function cancelBigCat(button) {
@@ -279,14 +279,13 @@ function deleteBigCategory(button) {
         var div = otherspan.parentElement;
 	var catid = div.getAttribute("category_id");
 	var requestString = "catid=" + catid + "&button4=true";
+        var confirm = window.confirm("Are you sure you want to delete this category?");
+        if (confirm) {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			if (xhr.responseText === "1") {
-                            var confirm = window.confirm("Are you sure you want to delete this category?");
-                            if (confirm) {
                             div.parentNode.removeChild(div);
-                        }
                         }
                         if (xhr.responseText === "0") {
                             alert('Something has gone terribly wrong.');
@@ -296,7 +295,9 @@ function deleteBigCategory(button) {
 	xhr.open('POST', 'updateserver.php', true);
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.send(requestString);
+    }
 }
+
 
 var _oldCatName=[];
 var _oldCatGoal = [];
@@ -306,6 +307,7 @@ function showBigCategoryForm(button) {
     var span = button.parentElement;
     var spandiv = span.parentElement;
     var category = spandiv.parentElement;
+    var categoryid = category.getAttribute("category_id")
     var name = spandiv.getElementsByClassName("categoryName")[0];
     var goal = spandiv.getElementsByClassName("categoryGoal")[0];
     _oldCatName[category.getAttribute('category_id')] = name;
@@ -318,8 +320,8 @@ function showBigCategoryForm(button) {
     newgoal.setAttribute("class", "categoryGoal");
     spandiv.appendChild(newname);
     spandiv.appendChild(newgoal);
-    newname.innerHTML = "Name: <input type='text' id='bigcname'>";
-    newgoal.innerHTML = "Goal: <input type='number' id='bigcgoal'>";
+    newname.innerHTML = "Name: <input type='text' id='"+categoryid+"-bigcname'>";
+    newgoal.innerHTML = "Goal: <input type='number' id='"+categoryid+"-bigcgoal'>";
     span.innerHTML = '<button class="saveButton" onclick="submitEditCategory(this)"><img src="resources/images/checkmark.png" height="15px" /></button><button class="cancelButton" onclick="cancelCategoryEdit(this)"><img src="resources/images/x.png" height="15px" /></button>';
     _newCatName[category.getAttribute('category_id')] = newname;
     _newCatGoal[category.getAttribute('category_id')] = newgoal;
@@ -327,7 +329,8 @@ function showBigCategoryForm(button) {
 
 function cancelCategoryEdit(button) {
     var span = button.parentElement;
-    var category_id = button.parentElement.parentElement.getAttribute('category_id');
+    var category_id = span.parentElement.parentElement.getAttribute("category_id");
+    console.log(category_id);
 	_oldCatName[category_id].style.display = '';
         _oldCatGoal[category_id].style.display = '';
 	_newCatName[category_id].parentNode.removeChild(_newCatName[category_id]);
@@ -340,8 +343,8 @@ function submitEditCategory(button) {
     var spandiv = button.parentElement.parentElement;
     var category = button.parentElement.parentElement.parentElement;
     var category_id = category.getAttribute("category_id");
-    var name = document.getElementById("bigcname").value;
-    var goal = document.getElementById("bigcgoal").value;
+    var name = document.getElementById(category_id+"-bigcname").value;
+    var goal = document.getElementById(category_id+"-bigcgoal").value;
     var requestString = "name=" + name + "&goal=" + goal + "&catid="+category_id+"&button5=true";
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {

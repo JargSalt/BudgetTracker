@@ -10,9 +10,9 @@ sec_session_start();
         
 
     if(isset($_POST['save'])) {
-    $name = strip_tags($_POST['name']);
-    $goal = strip_tags($_POST['goal']);
     $parid = strip_tags($_POST['catid']);
+    $name = strip_tags($_POST[$parid.'-name']);
+    $goal = strip_tags($_POST[$parid.'-goal']);
     $stmt = $mysqli->prepare("INSERT INTO categories (parent_ID, category_name, category_goal, user_id) VALUES (?,?,?,?)");
     $stmt->bind_param('isdi', $parid, $name, $goal, $user_id);
     if ($stmt->execute()) {

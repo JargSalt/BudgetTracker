@@ -117,7 +117,7 @@ if (login_check($mysqli) == true) {
     }
     if (isset($_POST['button4'])) {
         $catid = strip_tags($_POST['catid']);
-        deleteCategory($catid, $mysqli);
+        echo deleteCategory($catid, $mysqli);
     }
     
 } else {
