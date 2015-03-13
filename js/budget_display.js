@@ -264,7 +264,7 @@ function addCat(button) {
 
 function cancelCat(button) {
 	var parent = button.parentElement;
-	parent.innerHTML = "<button class='addCategory' onclick='addCategoryOptions(this)'>Add Subcategory</button>";
+	parent.innerHTML = "<button class='addCategory' onclick='showSubCatForm(this)'>Add Subcategory</button>";
 }
 
 function showCatForm(button) {

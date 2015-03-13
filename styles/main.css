@@ -2,44 +2,51 @@ body {
     background-color: green;
 }
 
-#containers #budget_display{
-    position: relative;
-    width: 900px;
-    margin: 0px;
+#containers {
+    width: 100%;
+    min-width: 1250px;
 }
 
-#containers #aggregates{
-    position: absolute;
+#container {
+    width: 100%;
+    min-width: 1250px;
+}
+
+#containers #budget_display{
+    position: relative;
+    float: left;
+    width: 70%;
+}
+
+#containers #sidebar {
+    float: right;
+    width: 26%;
+    padding: 10px;
+    text-align: left;
+}
+
+#aggregates{
     color: green;
     background-color: white;
     border: solid white;
-    padding-left: 20px;
-    left: 925px;
-    top: 137px;
-    width: 300px;
+    padding: 5px;
+    margin-bottom: 5px;
 }
 
-#containers #newcategory {
-    position: absolute;
+#newcategory {
     color: green;
     padding: 5px;
-    width: 310px;
-    margin-right: 50px;
-    left: 925px;
-    top: 500px;
     text-align: center;
     background-color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 #containers #createPublicPage {
-    position: absolute;
     color: green;
     padding: 5px;
-    width: 310px;
-    margin-right: 50px;
-    left: 925px;
-    top: 325px;
     text-align: center;
+    margin-top: 5px;
     background-color: white;
 }
 
@@ -52,21 +59,17 @@ button.random {
 }
 
 .container {
-    position: relative;
     border: solid white;
     border-radius: 5px;
-    width: calc(100%-30px);
 }
 
 .category {
-    position: relative;
     background-color: white;
     border: 2px solid black;
     border-radius: 5px;
     color: green;
-    width: calc(100%-120px);
     padding: 5px;
-    margin-left: 10px;
+    margin-left: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 5px;
@@ -77,12 +80,13 @@ button.random {
 }
 
 #header {
+    position: static;
     background-color: white;
     color: green;
     text-align: center;
     border: 4px solid;
     border-radius: 10px;
-    width: 750px;
+    width: 60%;
     height: 100%; 
     margin: auto;
     margin-bottom: 20px;
@@ -105,8 +109,7 @@ button.random {
 }
 
 .categoryName{
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }
 
 .categoryGoal {
@@ -120,26 +123,27 @@ button.random {
 }
 
 .categoryEdit {
-    position: absolute;
-    left: 600px;
+    float: right;
+    margin-left:2px;
+    margin-right:2px;
 }
 
 .categoryDelete {
-    position: absolute;
-    left: 670px;
+    float: right;
+    margin-left:2px;
+    margin-right:2px;
 }
 
-button.addCategory {
-    display: block;
-    position: relative;
-    margin-right: auto;
-    margin-left: auto;
+.endOfCtg {
+    width:100%;
+    text-align: center;
 }
 
 button.categoryShowHide {
-    position: absolute;
-    left: 730px;
-    height: 30px;
+    float: right;
+    margin-left:2px;
+    margin-right:2px;
+    height: 20px;
 }
 
 .editButton,.deleteButton,.newButton {

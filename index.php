@@ -20,6 +20,7 @@ if (login_check($mysqli) == true) {
         <script type="text/JavaScript" src="js/forms.js"></script> 
     </head>
     <body>
+        <div id="container">
         <div id='header'>
             <span> Budget Buddy </span>
         </div>
@@ -41,6 +42,7 @@ if (login_check($mysqli) == true) {
                                 'value="Register" onclick="location.href = \'register.php\';"></form>';
         }
         ?>
-        </div>     
+        </div>
+        </div>
     </body>
 </html>

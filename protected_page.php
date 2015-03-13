@@ -12,6 +12,7 @@ sec_session_start();
         <link rel="stylesheet" href="styles/userpage.css" />
     </head>
     <body>
+        <div id="container">
         <?php if (login_check($mysqli) == true) : ?>
         <div id="header">
             <span>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</span>
@@ -27,5 +28,6 @@ sec_session_start();
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
         <?php endif; ?>
+        </div>
     </body>
 </html>

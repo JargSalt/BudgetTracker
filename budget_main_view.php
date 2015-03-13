@@ -16,11 +16,13 @@ sec_session_start();
     <body onload="orderCategories(); getCategoryTotals();">
 
         <?php if (login_check($mysqli) == true) : ?>
+            <div id="container">
             <div id='header'>
                 <span>Your Budget</span>    
             </div>
             <div id="homebutton">
             <p><button onclick="window.location = 'protected_page.php';">Home Page</button></p>
+            </div>
             </div>
             <div id="containers">
             <div class="container" id='budget_display'>
@@ -44,7 +46,7 @@ sec_session_start();
 						<span class="categoryAmount">Actual: $?</span>
 						<span class="categoryEdit"><button class="editButton" onclick="showBigCategoryForm(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></span>
                                                 <span class="categoryDelete"><button class="deleteButton" onclick="deleteBigCategory(this)"><img src='resources/images/trashcan.png' height='15px' /></button></span>
-						<button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">show/hide details</button>
+						<button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">Show/Hide</button>
 					</span>
 					<table class="transaction_table" id="ttbl-<?php echo $category_id ?>">
 						<tr>
@@ -91,24 +93,23 @@ sec_session_start();
 				</div>
 			<?php  endfor; ?>
 			</div>
-			<div class="container" id="aggregates">
-				<h1>This Months Info:</h1>
-				<ul>
-					<li>Total budget:</li>
-					<li>Total spent:</li>
-					<li>Most expensive transaction:</li>
-					<li>Most expensive category:</li>
-				</ul>
-			</div>
-            <div class="container" id="newcategory">
-           		  <button class="random" onclick="showCatForm(this)" type="button">Add Category</button>
+            <div class="container" id="sidebar">
+            <div class="container" id="aggregates">
+		<h1>This Months Info:</h1>
+		<ul>
+                    <li>Total budget:</li>
+                    <li>Total spent:</li>
+                    <li>Most expensive transaction:</li>
+                    <li>Most expensive category:</li>
+		</ul>
             </div>
-                   <div class="container" id="createPublicPage">
-                        <button class="random" onclick="createPublicPage(this)" type="button">Share your budget</button>
-                     </div>        
-                     
-                        
-			</div>
+            <div class="container" id="newcategory">
+                    <button class="random" onclick="showCatForm(this)" type="button">Add Category</button>
+            </div>
+            <div class="container" id="createPublicPage">
+                    <button class="random" onclick="createPublicPage(this)" type="button">Share your budget</button>
+            </div>
+            </div>
 
             
         <?php else : ?>
@@ -116,6 +117,6 @@ sec_session_start();
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
         <?php endif; ?>
-            
+      
     </body>
 </html>

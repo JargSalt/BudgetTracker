@@ -2,6 +2,11 @@ body {
     background-color: green;
 }
 
+#container {
+    width: 100%;
+    min-width: 1250px;
+}
+
 #header {
     background-color: white;
     color: green;
