@@ -337,15 +337,25 @@ function get_ctg_transactions($mysqli, $ctg_id){
 	return $result_array;
 }
 
-function createStaticPage($user_id){
-	$unique_id = uniqid('static-page',true);
+function createStaticPage($user_id, $mysqli){
+	
+	$stmt = $mysqli->prepare("SELECT `unique_id` FROM `shared_urls` WHERE `user_id` = ?");
+	$stmt->bind_param("i",$user_id);
+	$stmt->execute(); 
+    $stmt->bind_result($unique_id);
+    if($stmt->fetch()){
+    	return $unique_id;
+    }else{
+    $stmt->close();
+	$unique_id = uniqid('',true);
 	$stmt = $mysqli->prepare("INSERT INTO `shared_urls`(`unique_id`, `user_id`) VALUES (?,?)");
-	$stmt->bind_param("ii", $unique_id, $user_id);
+	$stmt->bind_param("si", $unique_id, $user_id);
 	if($stmt->execute()){
+		
 		return $unique_id;	
 	}else{
 		return false;
 	}
-	
+	}
 }
 ?>
