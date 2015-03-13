@@ -216,10 +216,40 @@ function getUserName($user_id, $mysqli){
 	}
 }
 
-function get_public_total($category, $mysqli){
-	$total = 0;
-	
+function get_public_total($category_id){
+	$total = get_category_total_rec($category_id);
 	return $total;
+}
+
+function get_category_total_rec($category_id){
+	$total = 0.0;	
+	$mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+	
+	//get all transactions with $category_id
+	$stmt = $mysqli->prepare("SELECT `transaction_amount` FROM `transactions` WHERE `category_id` = ?");
+	$stmt->bind_param('i',$category_id);
+    $stmt->execute();   // Execute the prepared query.
+    $stmt->bind_result($transaction_amount);
+    while($stmt->fetch()){
+    	//add all transaction amounts to total
+    	$total += $transaction_amount;
+		
+		
+    }
+
+//	$stmt->close();	
+
+	//get all category id's with $category_id as parent_id
+	$stmt =  $mysqli->prepare("SELECT `category_ID` FROM `categories` WHERE parent_ID = ?");
+	$stmt->bind_param('i',$category_id);
+    $stmt->execute();   // Execute the prepared query.
+    $stmt->bind_result($child_id);
+    while($stmt->fetch()){
+    	//call get_category_total_rec on categories and add result to total
+    	$total +=  get_category_total_rec($child_id, $mysqli);
+	}
+
+	return $total;	
 }
 
 function get_public_categories($mysqli, $user_id){

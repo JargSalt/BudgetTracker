@@ -16,7 +16,7 @@ if($user_id){
         <script src="js/budget_display.js"></script>
     </head>
 
-    <body onload="orderCategories(); getCategoryTotals();">
+    <body onload="orderCategories();">
 
  <div id='header'>
                 <span><?php echo getUserName($user_id, $mysqli)."'s";?> Budget</span>    
@@ -43,7 +43,7 @@ if($user_id){
 					<span class="noHide">
                                             <span onclick="alert('this should go to a category specific page')" class="categoryName"><u><?php echo $category_name?></u></span>
 						<span class="categoryGoal">Goal: $<?php echo $category_goal ?></span> 
-						<span class="categoryAmount">Actual: $?</span>
+						<span class="categoryAmount">Actual: $<?php  echo get_public_total($category_id)?></span>
 						<button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">show/hide details</button>
 					</span>
 				</div>
