@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+    	<!-- based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL -->
         <meta charset="UTF-8">
-        <title>Secure Login: Registration Success</title>
+        <title>Budget Buddy: Registration Success</title>
         <link rel="stylesheet" href="styles/main.css" />
     </head>
     <body>

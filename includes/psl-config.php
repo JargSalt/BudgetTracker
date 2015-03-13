@@ -1,4 +1,5 @@
 <?php
+//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
 //Login details
 define("HOST", "localhost");     // The host you want to connect to.
 define("USER", "sec_user");    // The database username. 

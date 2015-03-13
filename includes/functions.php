@@ -1,73 +1,59 @@
 <?php
 include_once 'psl-config.php';
 
-function sec_session_start() {
-	$session_name = 'sec_session_id';
-	// Set a custom session name
-	$secure = SECURE;
-	// This stops JavaScript being able to access the session id.
-	$httponly = true;
-	// Forces sessions to only use cookies.
-	if (ini_set('session.use_only_cookies', 1) === FALSE) {
-		header("Location: ../error.php?err=Could not initiate a safe session (ini_set)");
+function sec_session_start() {//initializes a session that only uses cookies and regenerates the session id to help prevent cross site scripting attacks 
+//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
+		
+	 //set config option so session uses only cookies, this helps prevent cross-site scripting attacks
+	  if (ini_set('session.use_only_cookies', 1) === FALSE) {
+	 	echo "failed to set session.use_only_cookies";
 		exit();
-	}
-	// Gets current cookies params.
+	 }
+	 // Gets current cookies params.
 	$cookieParams = session_get_cookie_params();
-	session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
-	// Sets the session name to the one set above.
-	session_name($session_name);
+	$cookieParams = session_get_cookie_params();
+	session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], SECURE, true);
+	session_name('sec_session_id');
 	session_start();
-	// Start the PHP session
-	session_regenerate_id(true);
-	// regenerated the session, delete the old one.
+	session_regenerate_id(true); 
 }
 
-function login($email, $password, $mysqli) {
-	// Using prepared statements means that SQL injection is not possible.
-	if ($stmt = $mysqli -> prepare("SELECT id, username, password, salt 
-        FROM members
-       WHERE email = ?
-        LIMIT 1")) {
-		$stmt -> bind_param('s', $email);
-		// Bind "$email" to parameter.
-		$stmt -> execute();
-		// Execute the prepared query.
-		$stmt -> store_result();
-
-		// get variables from result.
+function login($email, $password, $mysqli) {//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
+	 
+	
+		//Get users info that coresponds to the given email
+		$stmt = $mysqli -> prepare("SELECT id, username, password, salt FROM members WHERE email = ?");
+		$stmt->bind_param('s', $email);
+		$stmt->execute();	
+		$stmt->store_result();
 		$stmt -> bind_result($user_id, $username, $db_password, $salt);
 		$stmt -> fetch();
 
-		// hash the password with the unique salt.
-		$password = hash('sha512', $password . $salt);
-		if ($stmt -> num_rows == 1) {
-			// If the user exists we check if the account is locked
-			// from too many login attempts
-
+			// the password in the database has been hashed with the stored salt
+			// we hash the provided password with the salt to verify it
+		  $password = hash('sha512', $password . $salt);
+		if ($stmt -> num_rows == 1) { //does the user exist that coresponds to $email
+			
 			if (checkbrute($user_id, $mysqli) == true) {
-				// Account is locked
-				// Send an email to user saying their account is locked
-				return false;
+				return false; //acount has had too many recent logins
 			} else {
 				// Check if the password in the database matches
-				// the password the user submitted.
+				
 				if ($db_password == $password) {
 					// Password is correct!
 					// Get the user-agent string of the user.
 					$user_browser = $_SERVER['HTTP_USER_AGENT'];
-					// XSS protection as we might print this value
-					$user_id = preg_replace("/[^0-9]+/", "", $user_id);
-					$_SESSION['user_id'] = $user_id;
-					// XSS protection as we might print this value
-					$username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username);
-					$_SESSION['username'] = $username;
+					$_SESSION['user_id'] = $user_id; 
+					//username is printed and was provided by user, so it should not be interpreted as html
+					$username = htmlspecialchars($username);
+					$_SESSION['username'] = $username;			
+					//hashing the password with the user browser so that more is needed that just a hashed password to highjack the session
 					$_SESSION['login_string'] = hash('sha512', $password . $user_browser);
-					// Login successful.
+
 					return true;
 				} else {
-					// Password is not correct
-					// We record this attempt in the database
+					
+					//record the time of failed attempt to check for brute force attempts
 					$now = time();
 					$mysqli -> query("INSERT INTO login_attempts(user_id, time)
                                     VALUES ('$user_id', '$now')");
@@ -78,27 +64,19 @@ function login($email, $password, $mysqli) {
 			// No user exists.
 			return false;
 		}
-	}
 }
 
-function checkbrute($user_id, $mysqli) {
-	// Get timestamp of current time
+function checkbrute($user_id, $mysqli) {//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
+	
 	$now = time();
+	$valid_attempts = $now - (2 * 60 * 60);//only iclude attempts from the last 2 hours (2hrs * 60min * 60s)
 
-	// All login attempts are counted from the past 2 hours.
-	$valid_attempts = $now - (2 * 60 * 60);
-
-	if ($stmt = $mysqli -> prepare("SELECT time 
-                             FROM login_attempts 
-                             WHERE user_id = ? 
-                            AND time > '$valid_attempts'")) {
-		$stmt -> bind_param('i', $user_id);
-
-		// Execute the prepared query.
+	if ($stmt = $mysqli -> prepare("SELECT time FROM login_attempts WHERE user_id = ? AND time > ?")) {
+		$stmt -> bind_param('ii', $user_id, $valid_attempts);
 		$stmt -> execute();
 		$stmt -> store_result();
 
-		// If there have been more than 5 failed logins
+		// If there have been more than 5 failed logins in the last 2 hrs then we lock the acount
 		if ($stmt -> num_rows > 5) {
 			return true;
 		} else {
@@ -108,12 +86,9 @@ function checkbrute($user_id, $mysqli) {
 }
 
 
-function login_check($mysqli) {
+function login_check($mysqli) {//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
     // Check if all session variables are set 
-    if (isset($_SESSION['user_id'], 
-                        $_SESSION['username'], 
-                        $_SESSION['login_string'])) {
- 
+    if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) { 
         $user_id = $_SESSION['user_id'];
         $login_string = $_SESSION['login_string'];
         $username = $_SESSION['username'];
@@ -121,42 +96,28 @@ function login_check($mysqli) {
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
  
-        if ($stmt = $mysqli->prepare("SELECT password 
-                                      FROM members 
-                                      WHERE id = ? LIMIT 1")) {
-            // Bind "$user_id" to parameter. 
-            $stmt->bind_param('i', $user_id);
-            $stmt->execute();   // Execute the prepared query.
-            $stmt->store_result();
+ 		//get password from db
+        $stmt = $mysqli->prepare("SELECT password FROM members WHERE id = ?");
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute(); 
+        $stmt->store_result();
  
-            if ($stmt->num_rows == 1) {
-                // If the user exists get variables from result.
+            if ($stmt->num_rows == 1) {//there is 1 and only 1 user with that id
+                
                 $stmt->bind_result($password);
-                $stmt->fetch();
+                $stmt->fetch();//get the password
                 $login_check = hash('sha512', $password . $user_browser);
  
                 if ($login_check == $login_string) {
-                    // Logged In!!!! 
                     return true;
-                } else {
-                    // Not logged in 
-                    return false;
-                }
-            } else {
-                // Not logged in 
-                return false;
-            }
-        } else {
-            // Not logged in 
-            return false;
-        }
-    } else {
-        // Not logged in 
-        return false;
-    }
+                } 
+            } 
+        } 
+return false;//else do login_check fails
 }
 
-function esc_url($url) {
+//this sanitizing the result of $_SERVER['PHP_SELF']
+function esc_url($url) {//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
  
     if ('' == $url) {
         return $url;

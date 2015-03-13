@@ -1,4 +1,5 @@
 <?php
+//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
 include_once 'db_connect.php';
 include_once 'psl-config.php';
  

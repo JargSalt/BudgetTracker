@@ -1,4 +1,5 @@
 <?php 
-include_once 'psl-config.php';   // As functions.php is not included
+//To be included on any page that connects to the MySql database
+include_once 'psl-config.php';   
 $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 ?>

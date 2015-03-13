@@ -1,6 +1,7 @@
 <?php
 include_once 'db_connect.php';
 include_once 'functions.php';
+//code based on this article http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
  
 sec_session_start(); // Our custom secure way of starting a PHP session.
  
