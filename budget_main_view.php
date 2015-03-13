@@ -73,7 +73,13 @@ sec_session_start();
 				</tr>
 			<?php endfor; ?>
 				<tr class='transaction'>
-					<td><input class="date" id="adddate" name="adddate" type="text"/></td>
+					<td><input class="date" id="adddate" name="adddate" type="text" value="<?php 
+						$today = getdate();
+						$day = str_pad($today['mday'], 2, '0' ,STR_PAD_LEFT);
+						$mon = str_pad($today['mon'], 2, '0' , STR_PAD_LEFT);
+						$year = $today['year'];
+						 echo "$year-$mon-$day";
+						?>"/></td>
 					<td><input class="name" id="addname" name="addname" type="text"/></td>
                                         <td><input class="amount" id="addamount" name="addamount" type="text" step=".01"/></td> 
 					<td><button class="newButton" onclick="submitNewTransaction(this);"><img src='resources/images/plus.png' height='15px' /></button></td>
