@@ -12,7 +12,7 @@ function getCategoryName(category_id) {
 function orderCategories() {
 	var categoriesNL = document.getElementsByClassName("category");
 	var categories = [];
-	for(var i = 0; i < categoriesNL.length; ++i){
+	for (var i = 0; i < categoriesNL.length; ++i) {
 		categories[i] = categoriesNL[i];
 	}
 	for (var i = 0; i < categoriesNL.length; ++i) {
@@ -193,7 +193,7 @@ function deleteTransaction(button) {
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === 4 && xhr.status === 200) {
 				table1.deleteRow(row1.rowIndex);
-                                getCategoryTotals();
+				getCategoryTotals();
 			}
 		};
 		xhr.open('POST', 'updateserver.php', true);
@@ -208,8 +208,8 @@ function addTransaction(button) {
 	var buttondata = button.parentElement;
 	var buttonrow = buttondata.parentElement;
 	var tbody = buttonrow.parentElement;
-        var category = tbody.parentElement.parentElement;
-        var catid = category.getAttribute("category_id");
+	var category = tbody.parentElement.parentElement;
+	var catid = category.getAttribute("category_id");
 	var date = buttonrow.cells[0].firstChild.value;
 	var name = buttonrow.cells[1].firstChild.value;
 	var amount = buttonrow.cells[2].firstChild.value;
@@ -218,20 +218,20 @@ function addTransaction(button) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			tbody.innerHTML = xhr.responseText;
-                        getCategoryTotals();
+			getCategoryTotals();
 		}
 	};
 	xhr.open('POST', 'updateserver.php', true);
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.send(requestString);
-        
+
 }
 
 function showSubCatForm(button) {
 	var parent = button.parentElement;
-        var category = parent.parentElement;
-        var catid = category.getAttribute("category_id");
-	parent.innerHTML = "<form method='POST' action='addcategory.php' style='display:inline'><input type='hidden' name='catid' value='"+catid+"'> Name: <input type='text' id='"+catid+"-newcatname' name='"+catid+"-name'> Goal: <input type='number' id='"+catid+"-newcatgoal' name='"+catid+"-goal'>" + "    <button id='save' class='saveButton' name='save'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "    <button id='cancel' class='cancelButton' onclick='cancelCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+	var category = parent.parentElement;
+	var catid = category.getAttribute("category_id");
+	parent.innerHTML = "<form method='POST' action='addcategory.php' style='display:inline'><input type='hidden' name='catid' value='" + catid + "'> Name: <input type='text' id='" + catid + "-newcatname' name='" + catid + "-name'> Goal: <input type='number' id='" + catid + "-newcatgoal' name='" + catid + "-goal'>" + "    <button id='save' class='saveButton' name='save'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "    <button id='cancel' class='cancelButton' onclick='cancelCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
 function addCat(button) {
@@ -259,7 +259,7 @@ function addCat(button) {
 	xhr.open('POST', 'addcategory.php', true);
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.send(requestString);
-	
+
 }
 
 function cancelCat(button) {
@@ -269,139 +269,145 @@ function cancelCat(button) {
 
 function showCatForm(button) {
 	var parent = button.parentElement;
-        var catid = 0;
-	parent.innerHTML = "<form method='POST' style='display:inline' action='addcategory.php'><input type='hidden' name='catid' value='"+catid+"'><p>Name: <input type='text' id='"+catid+"-bigcatname' name='"+catid+"-name'></p> <p>Goal: <input type='number' id='"+catid+"-bigcatgoal' name='"+catid+"-goal'></p>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+	var catid = 0;
+	parent.innerHTML = "<form method='POST' style='display:inline' action='addcategory.php'><input type='hidden' name='catid' value='" + catid + "'><p>Name: <input type='text' id='" + catid + "-bigcatname' name='" + catid + "-name'></p> <p>Goal: <input type='number' id='" + catid + "-bigcatgoal' name='" + catid + "-goal'></p>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
 function cancelBigCat(button) {
-        var parent = button.parentElement;
-        parent.innerHTML = "<button class='random' onclick='showCatForm(this)' type='button'>Add Category</button>";
+	var parent = button.parentElement;
+	parent.innerHTML = "<button class='random' onclick='showCatForm(this)' type='button'>Add Category</button>";
 }
+
 function deleteBigCategory(button) {
-        var span = button.parentElement;
-        var otherspan = span.parentElement;
-        var div = otherspan.parentElement;
+	var span = button.parentElement;
+	var otherspan = span.parentElement;
+	var div = otherspan.parentElement;
 	var catid = div.getAttribute("category_id");
 	var requestString = "catid=" + catid + "&button4=true";
-        var confirm = window.confirm("Are you sure you want to delete this category?");
-        if (confirm) {
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState === 4 && xhr.status === 200) {
-			if (xhr.responseText === "1") {
-                            div.parentNode.removeChild(div);
-                        }
-                        if (xhr.responseText === "0") {
-                            alert('Something has gone terribly wrong.');
-                        }
-		}
-	};
-	xhr.open('POST', 'updateserver.php', true);
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.send(requestString);
-    }
+	var confirm = window.confirm("Are you sure you want to delete this category?");
+	if (confirm) {
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				if (xhr.responseText === "1") {
+					div.parentNode.removeChild(div);
+				}
+				if (xhr.responseText === "0") {
+					alert('Something has gone terribly wrong.');
+				}
+			}
+		};
+		xhr.open('POST', 'updateserver.php', true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send(requestString);
+	}
 }
 
-
-var _oldCatName=[];
+var _oldCatName = [];
 var _oldCatGoal = [];
-var _newCatName=[];
-var _newCatGoal=[];
+var _newCatName = [];
+var _newCatGoal = [];
 function showBigCategoryForm(button) {
-    var span = button.parentElement;
-    var spandiv = span.parentElement;
-    var category = spandiv.parentElement;
-    var categoryid = category.getAttribute("category_id")
-    var name = spandiv.getElementsByClassName("categoryName")[0];
-    var goal = spandiv.getElementsByClassName("categoryGoal")[0];
-    _oldCatName[category.getAttribute('category_id')] = name;
-    _oldCatGoal[category.getAttribute('category_id')] = goal;
-    name.style.display = 'none';
-    goal.style.display = 'none';
-    var newname = document.createElement("span");
-    newname.setAttribute("class", "categoryName");
-    var newgoal = document.createElement("span");
-    newgoal.setAttribute("class", "categoryGoal");
-    spandiv.appendChild(newname);
-    spandiv.appendChild(newgoal);
-    newname.innerHTML = "Name: <input type='text' id='"+categoryid+"-bigcname'>";
-    newgoal.innerHTML = "Goal: <input type='number' id='"+categoryid+"-bigcgoal'>";
-    span.innerHTML = '<button class="saveButton" onclick="submitEditCategory(this)"><img src="resources/images/checkmark.png" height="15px" /></button><button class="cancelButton" onclick="cancelCategoryEdit(this)"><img src="resources/images/x.png" height="15px" /></button>';
-    _newCatName[category.getAttribute('category_id')] = newname;
-    _newCatGoal[category.getAttribute('category_id')] = newgoal;
+	var span = button.parentElement;
+	var spandiv = span.parentElement;
+	var category = spandiv.parentElement;
+	var catName = category.getAttribute('name');
+	var catGoal = category.getAttribute('goal');
+	var categoryid = category.getAttribute("category_id");
+	var name = spandiv.getElementsByClassName("categoryName")[0];
+	var goal = spandiv.getElementsByClassName("categoryGoal")[0];
+	_oldCatName[category.getAttribute('category_id')] = name;
+	_oldCatGoal[category.getAttribute('category_id')] = goal;
+	name.style.display = 'none';
+	goal.style.display = 'none';
+	var newname = document.createElement("span");
+	newname.setAttribute("class", "categoryName");
+	var newgoal = document.createElement("span");
+	newgoal.setAttribute("class", "categoryGoal");
+	spandiv.appendChild(newname);
+	spandiv.appendChild(newgoal);
+	newname.innerHTML = "Name: <input class='name' type='text' value='" + catName + "' id='" + categoryid + "-bigcname'>";
+	newgoal.innerHTML = "Goal: <input class='amount' type='text' value='" + catGoal + "' id='" + categoryid + "-bigcgoal'>";
+	span.innerHTML = '<button class="saveButton" onclick="submitEditCategory(this)"><img src="resources/images/checkmark.png" height="15px" /></button><button class="cancelButton" onclick="cancelCategoryEdit(this)"><img src="resources/images/x.png" height="15px" /></button>';
+	_newCatName[category.getAttribute('category_id')] = newname;
+	_newCatGoal[category.getAttribute('category_id')] = newgoal;
 }
 
 function cancelCategoryEdit(button) {
-    var span = button.parentElement;
-    var category_id = span.parentElement.parentElement.getAttribute("category_id");
-    console.log(category_id);
+	var span = button.parentElement;
+	var category_id = span.parentElement.parentElement.getAttribute("category_id");
+	console.log(category_id);
 	_oldCatName[category_id].style.display = '';
-        _oldCatGoal[category_id].style.display = '';
+	_oldCatGoal[category_id].style.display = '';
 	_newCatName[category_id].parentNode.removeChild(_newCatName[category_id]);
-        _newCatGoal[category_id].parentNode.removeChild(_newCatGoal[category_id]);
-        span.innerHTML = '<button class="editButton" onclick="showBigCategoryForm(this)"><img src="resources/images/edit-icon.png" height="15px" /></button>';
+	_newCatGoal[category_id].parentNode.removeChild(_newCatGoal[category_id]);
+	span.innerHTML = '<button class="editButton" onclick="showBigCategoryForm(this)"><img src="resources/images/edit-icon.png" height="15px" /></button>';
 }
 
 function submitEditCategory(button) {
-    var span = button.parentElement;
-    var spandiv = button.parentElement.parentElement;
-    var category = button.parentElement.parentElement.parentElement;
-    var category_id = category.getAttribute("category_id");
-    var name = document.getElementById(category_id+"-bigcname").value;
-    var goal = document.getElementById(category_id+"-bigcgoal").value;
-    var requestString = "name=" + name + "&goal=" + goal + "&catid="+category_id+"&button5=true";
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState === 4 && xhr.status === 200) {
-                            category.setAttribute("name", name);
-                            category.setAttribute("goal", goal);
-                            //spandiv.getElementsByClassName("categoryName")[0].innerHTML = name;
-                            //spandiv.getElementsByClassName("categoryGoal")[0].innerHTML = "Goal: $"+goal;
-                            _newCatName[category_id].innerHTML = "<u>"+name+"</u>";
-                            _newCatGoal[category_id].innerHTML = "Goal: $"+goal;
-                            _oldCatName[category_id].parentNode.removeChild(_oldCatName[category_id]);
-                            _oldCatGoal[category_id].parentNode.removeChild(_oldCatGoal[category_id]);
-                            span.innerHTML = '<button class="editButton" onclick="showBigCategoryForm(this)"><img src="resources/images/edit-icon.png" height="15px" /></button>';
-                            getCategoryTotals();
-                            orderCategories();
-		}
-	};
-	xhr.open('POST', 'addcategory.php', true);
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.send(requestString);
+
+	var span = button.parentElement;
+	var spanNoHide = button.parentElement.parentElement;
+
+	if (validateChildren(spanNoHide)) {
+		var category = button.parentElement.parentElement.parentElement;
+		var category_id = category.getAttribute("category_id");
+		var name = document.getElementById(category_id + "-bigcname").value;
+		var goal = document.getElementById(category_id + "-bigcgoal").value;
+		var requestString = "name=" + name + "&goal=" + goal + "&catid=" + category_id + "&button5=true";
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				category.setAttribute("name", name);
+				category.setAttribute("goal", goal);
+				//spandiv.getElementsByClassName("categoryName")[0].innerHTML = name;
+				//spandiv.getElementsByClassName("categoryGoal")[0].innerHTML = "Goal: $"+goal;
+				_newCatName[category_id].innerHTML = "<u>" + name + "</u>";
+				_newCatGoal[category_id].innerHTML = "Goal: $" + goal;
+				_oldCatName[category_id].parentNode.removeChild(_oldCatName[category_id]);
+				_oldCatGoal[category_id].parentNode.removeChild(_oldCatGoal[category_id]);
+				span.innerHTML = '<button class="editButton" onclick="showBigCategoryForm(this)"><img src="resources/images/edit-icon.png" height="15px" /></button>';
+				getCategoryTotals();
+				orderCategories();
+			}
+		};
+		xhr.open('POST', 'addcategory.php', true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send(requestString);
+	}
 }
 
-function getCategoryTotals(){
+function getCategoryTotals() {
 	categories = document.getElementsByClassName("category");
-	for(var i = 0; i < categories.length; ++i){
+	for (var i = 0; i < categories.length; ++i) {
 		getCategoryTotal(categories[i]);
 	}
 }
 
-function getCategoryTotal(category){
+function getCategoryTotal(category) {
 	var total = 0;
 	var ttables = category.getElementsByTagName("TABLE");
-	for(var i = 0; i < ttables.length; ++i){
-		var transactions =  ttables[i].getElementsByClassName("transaction");
-		for(var j = 0; j < transactions.length; ++j){
-		var transaction = ttables[i].getElementsByClassName("transaction")[j];
-		if(transaction.hasAttribute("amount")){
-			total += parseFloat(transaction.getAttribute("amount"));
+	for (var i = 0; i < ttables.length; ++i) {
+		var transactions = ttables[i].getElementsByClassName("transaction");
+		for (var j = 0; j < transactions.length; ++j) {
+			var transaction = ttables[i].getElementsByClassName("transaction")[j];
+			if (transaction.hasAttribute("amount")) {
+				total += parseFloat(transaction.getAttribute("amount"));
 			}
 		}
 	}
 	var amount = category.getElementsByClassName("categoryAmount");
-	amount[0].innerHTML= "Actual: $" + Number(total.toFixed(2));
-	
+	amount[0].innerHTML = "Actual: $" + Number(total.toFixed(2));
+
 }
 
-function createPublicPage(button){
+function createPublicPage(button) {
 	var parent = button.parentElement;
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			var url = document.createElement("P");
-			url.setAttribute("class","publicUrl");
+			url.setAttribute("class", "publicUrl");
 			url.innerHTML = "Your public url is: " + xhr.responseText;
 			parent.appendChild(url);
 			parent.removeChild(button);
@@ -410,7 +416,7 @@ function createPublicPage(button){
 	xhr.open('POST', 'createStaticPage.php', true);
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.send();
-	
+
 }
 
 ;
