@@ -10,7 +10,6 @@ body {
 
 #containers #aggregates{
     position: absolute;
-    float: right;
     color: green;
     background-color: white;
     border: solid white;
@@ -21,15 +20,27 @@ body {
 }
 
 #containers #newcategory {
-    position: relative;
+    position: absolute;
     color: green;
     padding: 5px;
-    height: 100%;
-    width: 325px;
-    top: 10px;
+    width: 310px;
+    margin-right: 50px;
+    left: 925px;
+    top: 500px;
     text-align: center;
     background-color: white;
+}
 
+#containers #createPublicPage {
+    position: absolute;
+    color: green;
+    padding: 5px;
+    width: 310px;
+    margin-right: 50px;
+    left: 925px;
+    top: 325px;
+    text-align: center;
+    background-color: white;
 }
 
 button.random {
