@@ -258,7 +258,7 @@ function get_public_categories($mysqli, $user_id){
 	$stmt->bind_param('i', $user_id);//use bind_param for better security from sql injections and such
         $stmt->execute();   // Execute the prepared query.
 	$stmt->bind_result($category_id, $parent_id, $category_name, $category_goal);
-	$result_array = [];
+	$result_array = array();
 	$i = 0;
 	while($stmt->fetch()){
 		$tmp_array = array(
@@ -283,7 +283,7 @@ function get_categories($mysqli){
 	$stmt->bind_param('i', $user_id);//use bind_param for better security from sql injections and such
         $stmt->execute();   // Execute the prepared query.
 	$stmt->bind_result($category_id, $parent_id, $category_name, $category_goal);
-	$result_array = [];
+	$result_array = array();
 	$i = 0;
 	while($stmt->fetch()){
 		$tmp_array = array(
@@ -319,7 +319,7 @@ function get_ctg_transactions($mysqli, $ctg_id){
     $stmt->execute();   // Execute the prepared query.
     $stmt->bind_result($transaction_id, $category_id, $transaction_name, $transaction_amount, $date);
 	
-		$result_array = [];
+		$result_array = array();
 	$i = 0;
 	while($stmt->fetch()){
 		$tmp_array = array(
