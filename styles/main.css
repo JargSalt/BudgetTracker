@@ -113,13 +113,13 @@ button.random {
 }
 
 .categoryGoal {
-    position: absolute;
-    left: 400px;
+    position: relative;
+    left: 55%;
 }
 
 .categoryAmount {
-    position: absolute;
-    left: 300px;
+    position: relative;
+    left: 35%;
 }
 
 .categoryEdit {
