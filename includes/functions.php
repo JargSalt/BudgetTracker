@@ -190,7 +190,7 @@ function esc_url($url) {
 function getUserIdfromUnique($uid, $mysqli){
 
 	$stmt = $mysqli->prepare("SELECT `user_id` FROM `shared_urls` WHERE unique_id = ?");
-	$stmt->bind_param("i", $uid);
+	$stmt->bind_param("s", $uid);
 	$stmt->execute();
 	$stmt->bind_result($user_id);
 	if($stmt->fetch()){
