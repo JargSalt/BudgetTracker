@@ -308,7 +308,7 @@ function createStaticPage($user_id, $mysqli){
             return $unique_id;
         }else{
         $stmt->close();
-	$unique_id = uniqid('',true);
+	$unique_id = uniqid('',false);
 	$stmt = $mysqli->prepare("INSERT INTO `shared_urls`(`unique_id`, `user_id`) VALUES (?,?)");
 	$stmt->bind_param("si", $unique_id, $user_id);
 	if($stmt->execute()){

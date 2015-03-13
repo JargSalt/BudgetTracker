@@ -10,8 +10,12 @@ function getCategoryName(category_id) {
 }
 
 function orderCategories() {
-	var categories = document.getElementsByClassName("category");
-	for (var i = 0; i < categories.length; ++i) {
+	var categoriesNL = document.getElementsByClassName("category");
+	var categories = [];
+	for(var i = 0; i < categoriesNL.length; ++i){
+		categories[i] = categoriesNL[i];
+	}
+	for (var i = 0; i < categoriesNL.length; ++i) {
 		var category = categories[i];
 		var parent_id = category.getAttribute('parent_id');
 		if (parent_id == 0) {
