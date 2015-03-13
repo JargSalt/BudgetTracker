@@ -10,31 +10,34 @@ body {
 
 #containers #aggregates{
     position: absolute;
+    float: right;
     color: green;
     background-color: white;
     border: solid white;
     padding-left: 20px;
     left: 925px;
-    top: 98px;
+    top: 137px;
     width: 300px;
 }
 
 #containers #newcategory {
-    position: absolute;
+    position: relative;
     color: green;
-    height: 100px;
+    padding: 5px;
+    height: 100%;
     width: 325px;
+    top: 10px;
     text-align: center;
     background-color: white;
-    left: 925px;
-    top: 275px;
+
 }
 
 button.random {
     position: relative;
-    height: 50px;
+    height: 100%;
     width: 200px;
-    top: 23px;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .container {
@@ -85,6 +88,11 @@ button.random {
     width: 500px; 
 }
 
+#homebutton {
+    margin: auto;
+    text-align: center;
+}
+
 .categoryName{
     font-size: 24px;
     font-family: sans-serif;
@@ -92,17 +100,22 @@ button.random {
 
 .categoryGoal {
     position: absolute;
-    right: 200px;
+    left: 400px;
 }
 
 .categoryAmount {
     position: absolute;
-    right: 300px;
+    left: 300px;
 }
 
 .categoryEdit {
     position: absolute;
-    right: 10px;
+    left: 600px;
+}
+
+.categoryDelete {
+    position: absolute;
+    left: 670px;
 }
 
 button.addCategory {
@@ -114,8 +127,8 @@ button.addCategory {
 
 button.categoryShowHide {
     position: absolute;
-    right: 40px;
-    height: 31px;
+    left: 745px;
+    height: 30px;
 }
 
 .editButton,.deleteButton,.newButton {

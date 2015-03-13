@@ -14,7 +14,7 @@ sec_session_start();
     $goal = strip_tags($_POST['goal']);
     $parid = strip_tags($_POST['parid']);
     $stmt = $mysqli->prepare("INSERT INTO categories (parent_ID, category_name, category_goal, user_id) VALUES (?,?,?,?)");
-    $stmt->bind_param('isddi', $parid, $name, $amount, $goal, $user_id);
+    $stmt->bind_param('isdi', $parid, $name, $goal, $user_id);
     if ($stmt->execute()) {
         $catid_select = "SELECT category_id FROM categories WHERE category_name='".$name."'";
         $result = mysqli_query($mysqli, $catid_select);

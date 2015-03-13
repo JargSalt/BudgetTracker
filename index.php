@@ -34,8 +34,8 @@ if (login_check($mysqli) == true) {
         }
         else { 
             echo '<form action="includes/process_login.php" method="post" name="login_form">'.                      
-                    'Email: <input type="text" name="email" />&nbsp;&nbsp;Password: <input type="password"'. 
-                        'name="password" id="password"/><br><br><input type="button" value="Login"'. 
+                    '<p>Email: <input type="text" name="email" /></p><p>Password: <input type="password"'. 
+                        'name="password" id="password"/></p><br><input type="button" value="Login"'. 
                             'onclick="formhash(this.form, this.form.password);" />&nbsp;&nbsp;<input type="button"'.
                                 'value="Register" onclick="location.href = \'register.php\';"></form>';
         }

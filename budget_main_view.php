@@ -13,10 +13,13 @@ sec_session_start();
         <script src="js/budget_display.js"></script>
     </head>
     <body onload="orderCategories()">
-
+    
         <?php if (login_check($mysqli) == true) : ?>
             <div id='header'>
                 <span>Your Budget</span>    
+            </div>
+            <div id="homebutton">
+            <p><button onclick="window.location = 'protected_page.php';">Home Page</button></p>
             </div>
             <div id="containers">
             <div class="container" id='budget_display'>
@@ -38,7 +41,8 @@ sec_session_start();
                                             <span onclick="alert('this should go to a category specific page')" class="categoryName"><u><?php echo $category_name?></u></span>
 						<span class="categoryGoal">Goal: $<?php echo $category_goal ?></span> 
 						<span class="categoryAmount">Actual: $?</span>
-						<span class="categoryEdit"><button class="editButton" onclick="alert('This should make all fields editable and/or show a form to edit the category')"><img src='resources/images/edit-icon.png' height='20px' /></button></span>
+						<span class="categoryEdit"><button class="editButton" onclick="showBigCategoryForm(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></span>
+                                                <span class="categoryDelete"><button class="deleteButton" onclick="deleteBigCategory(this)"><img src='resources/images/trashcan.png' height='15px' /></button></span>
 						<button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">show/hide details</button>
 					</span>
 					<table class="transaction_table" id="ttbl-<?php echo $category_id ?>">
@@ -70,7 +74,7 @@ sec_session_start();
 				<tr class='transaction'>
 					<td><input class="date" id="adddate" name="adddate" type="text"/></td>
 					<td><input class="name" id="addname" name="addname" type="text"/></td>
-                    <td><input class="amount" id="addamount" name="addamount" type="text" step=".01"/></td> 
+                                        <td><input class="amount" id="addamount" name="addamount" type="text" step=".01"/></td> 
 					<td><button class="newButton" onclick="submitNewTransaction(this);"><img src='resources/images/plus.png' height='15px' /></button></td>
 				</tr>
 					</table>

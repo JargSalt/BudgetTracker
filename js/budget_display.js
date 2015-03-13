@@ -14,7 +14,7 @@ function orderCategories() {
 	for (var i = 0; i < categories.length; ++i) {
 		var category = categories[i];
 		var parent_id = category.getAttribute('parent_id');
-		if (parent_id == "") {
+		if (parent_id == 0) {
 			continue;
 		} else {
 			var parent_ctg = document.getElementById("ctg-" + parent_id);
@@ -294,7 +294,48 @@ function cancelCat(button) {
 
 function showCatForm(button) {
 	var parent = button.parentElement;
-	parent.innerHTML = "<form method='POST' action='addcategory.php'>Name: <input type='text' id='bigcatname' name='name'><br> Goal: <input type='number' id='bigcatgoal' name='goal'><br><br>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat()'><img src='resources/images/x.png' height='15px' /></button>";
+	parent.innerHTML = "<form method='POST' action='addcategory.php'><p>Name: <input type='text' id='bigcatname' name='name'></p> <p>Goal: <input type='number' id='bigcatgoal' name='goal'></p>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+}
+
+function cancelBigCat(button) {
+        var parent = button.parentElement;
+        parent.innerHTML = "<button class='random' onclick='showCatForm(this)' type='button'>Add Category</button>";
+}
+function deleteBigCategory(button) {
+        var span = button.parentElement;
+        var otherspan = span.parentElement;
+        var div = otherspan.parentElement;
+        console.log(div);
+	var catid = div.getAttribute("category_id");
+        console.log(catid);
+	var requestString = "catid=" + catid + "&button4=true";
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			if (xhr.responseText === "1") {
+                            var confirm = window.confirm("Are you sure you want to delete this transaction?");
+                            if (confirm) {
+                            div.parentNode.removeChild(div);
+                        }
+                        }
+                        if (xhr.responseText === "0") {
+                            alert('Something has gone terribly wrong.');
+                        }
+		}
+	};
+	xhr.open('POST', 'updateserver.php', true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.send(requestString);
+}
+
+function showBigCategoryForm(button) {
+    var span = button.parentElement;
+    var category = span.parentElement;
+    var name = category.childNodes[1];
+    var goal = category.childNodes[3];
+    name.innerHTML = "Name: <input type='text' id='bigcname'>";
+    goal.innerHTML = "Goal: <input type='number' id='bigcgoal'>";
+    span.innerHTML = '<button class="saveButton" onclick="submitEditCategory(this)"><img src="resources/images/checkmark.png" height="15px" /></button><button class="cancelButton" onclick="cancelCategoryEdit(this)"><img src="resources/images/x.png" height="15px" /></button>';
 }
 
 ;
