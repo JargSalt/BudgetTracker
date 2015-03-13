@@ -11,7 +11,7 @@ if (login_check($mysqli) == true){
 	$unique_id = createStaticPage($user_id, $mysqli);
 	
 	if($unique_id){
-		$url = "http://" . $_SERVER['SERVER_NAME']. "/BudgetTracker/public_budget.php?uid=".$unique_id;
+		$url = getBaseUrl() . "public_budget.php?uid=".$unique_id;
 		echo $url;
 	}else{
 		echo "failed to create public page";

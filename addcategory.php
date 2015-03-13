@@ -16,7 +16,7 @@ sec_session_start();
     $stmt = $mysqli->prepare("INSERT INTO categories (parent_ID, category_name, category_goal, user_id) VALUES (?,?,?,?)");
     $stmt->bind_param('isdi', $parid, $name, $goal, $user_id);
     if ($stmt->execute()) {
-        header("Location: ../BudgetBuddy/budget_main_view.php"); /* Redirect browser */
+        header("Location: ". getBaseUrl() ."budget_main_view.php"); /* Redirect browser */
         exit();
     }
     }
