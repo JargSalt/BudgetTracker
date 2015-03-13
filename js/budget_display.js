@@ -127,6 +127,10 @@ function editTransaction(button) {
 	var table = row.parentElement;
 	var newrow = table.insertRow(row.rowIndex);
 	newrow.setAttribute("transaction_id", transid);
+	newrow.setAttribute("class", "transaction");
+	newrow.setAttribute("amount", amount);
+	newrow.setAttribute("date", date);
+	newrow.setAttribute("name", transid);
 	var cell1 = newrow.insertCell(0);
 	var cell2 = newrow.insertCell(1);
 	var cell3 = newrow.insertCell(2);
@@ -155,9 +159,16 @@ function updateServer(button) {
 	var id = row.getAttribute("transaction_id");
 	var str = "date=" + date + "&name=" + name + "&amount=" + amount + "&id=" + id + "&button=true";
 	var xhr = new XMLHttpRequest();
+	row.setAttribute("transaction_id", id);
+	row.setAttribute("date", date);
+	row.setAttribute("amount", amount);
+	row.setAttribute("name", name);
+	row.setAttribute("class", "transaction");
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			row.innerHTML = xhr.responseText;
+			_editRow[id].parentNode.removeChild(_editRow[id]);
+			getCategoryTotals();
 		}
 	};
 	xhr.open('POST', 'updateserver.php', true);
@@ -185,6 +196,7 @@ function deleteTransaction(button) {
 		xhr.send(str1);
 	} else {
 	}
+	getCategoryTotals();
 
 }
 
@@ -252,6 +264,7 @@ function addTransaction(button) {
 		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhr.send(requestString);
 	}
+	getCategoryTotals();
 
 }
 
@@ -285,6 +298,7 @@ function addCat(button) {
 	xhr.open('POST', 'addcategory.php', true);
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.send(requestString);
+	
 }
 
 function cancelCat(button) {
