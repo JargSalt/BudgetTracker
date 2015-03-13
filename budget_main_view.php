@@ -83,7 +83,7 @@ sec_session_start();
 					<button class="addCategory" onclick="addCategoryOptions(this)">Add Subcategory</button>
 					</span>
 				</div>
-			<?php  endfor;?>
+			<?php  endfor; ?>
 			</div>
 			<div class="container" id="aggregates">
 				<h1>This Months Info:</h1>
@@ -94,9 +94,14 @@ sec_session_start();
 					<li>Most expensive category:</li>
 				</ul>
 			</div>
-                        <div class="container" id="newcategory">
-                        <button class="random" onclick="showCatForm(this)" type="button">Add Category</button>
-                        </div>
+            <div class="container" id="newcategory">
+           		  <button class="random" onclick="showCatForm(this)" type="button">Add Category</button>
+            </div>
+                   <div class="container" id="createPublicPage">
+                        <button class="random" onclick="createPublicPage(this)" type="button">Share your budget</button>
+                     </div>        
+                     
+                        
 			</div>
 
             

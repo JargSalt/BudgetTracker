@@ -376,5 +376,23 @@ function getCategoryTotal(category){
 	
 }
 
+function createPublicPage(button){
+	var parent = button.parentElement;
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			var url = document.createElement("P");
+			url.setAttribute("class","publicUrl");
+			url.innerHTML = "Your public url is: " + xhr.responseText;
+			parent.appendChild(url);
+			parent.removeChild(button);
+		}
+	};
+	xhr.open('POST', 'createStaticPage.php', true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.send();
+	
+}
+
 ;
 

@@ -187,7 +187,94 @@ function esc_url($url) {
     }
 }
 
+function getUserIdfromUnique($uid, $mysqli){
 
+	$stmt = $mysqli->prepare("SELECT `user_id` FROM `shared_urls` WHERE unique_id = ?");
+	$stmt->bind_param("i", $uid);
+	$stmt->execute();
+	$stmt->bind_result($user_id);
+	if($stmt->fetch()){
+		$stmt->close();
+		return $user_id;
+	}else{
+		$stmt->close();
+		return false;
+	}
+}
+
+function getUserName($user_id, $mysqli){
+	$stmt = $mysqli->prepare("SELECT `username` FROM `members` WHERE id = ?");
+	$stmt->bind_param("i", $user_id);
+	$stmt->execute();
+	$stmt->bind_result($user_name);
+	if($stmt->fetch()){
+		$stmt->close();
+		return $user_name;
+	}else{
+		$stmt->close();
+		return false;
+	}
+}
+
+function get_public_total($category_id){
+	$total = get_category_total_rec($category_id);
+	return $total;
+}
+
+function get_category_total_rec($category_id){
+	$total = 0.0;	
+	$mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+	
+	//get all transactions with $category_id
+	$stmt = $mysqli->prepare("SELECT `transaction_amount` FROM `transactions` WHERE `category_id` = ?");
+	$stmt->bind_param('i',$category_id);
+    $stmt->execute();   // Execute the prepared query.
+    $stmt->bind_result($transaction_amount);
+    while($stmt->fetch()){
+    	//add all transaction amounts to total
+    	$total += $transaction_amount;
+		
+		
+    }
+
+//	$stmt->close();	
+
+	//get all category id's with $category_id as parent_id
+	$stmt =  $mysqli->prepare("SELECT `category_ID` FROM `categories` WHERE parent_ID = ?");
+	$stmt->bind_param('i',$category_id);
+    $stmt->execute();   // Execute the prepared query.
+    $stmt->bind_result($child_id);
+    while($stmt->fetch()){
+    	//call get_category_total_rec on categories and add result to total
+    	$total +=  get_category_total_rec($child_id, $mysqli);
+	}
+
+	return $total;	
+}
+
+function get_public_categories($mysqli, $user_id){
+	//prepare query
+	$stmt = $mysqli->prepare("SELECT `category_ID`, `parent_ID`, `category_name`, `category_goal` FROM `categories` WHERE `user_id` = ? order by category_name");
+	$stmt->bind_param('i', $user_id);//use bind_param for better security from sql injections and such
+        $stmt->execute();   // Execute the prepared query.
+	$stmt->bind_result($category_id, $parent_id, $category_name, $category_goal);
+	$result_array = [];
+	$i = 0;
+	while($stmt->fetch()){
+		$tmp_array = array(
+			"category_id" => $category_id,
+			"parent_id" => $parent_id,
+			"category_name" => $category_name,
+			"category_goal" => $category_goal
+		);
+		//echo "\r\n".$i;
+		//print_r($tmp_array);
+		$result_array[$i] = $tmp_array;
+		++$i;
+	}
+	$stmt->close();
+	return $result_array;
+}
 
 function get_categories($mysqli){
 	$user_id = $_SESSION['user_id'];
@@ -248,5 +335,27 @@ function get_ctg_transactions($mysqli, $ctg_id){
 		++$i;
 	}
 	return $result_array;
+}
+
+function createStaticPage($user_id, $mysqli){
+	
+	$stmt = $mysqli->prepare("SELECT `unique_id` FROM `shared_urls` WHERE `user_id` = ?");
+	$stmt->bind_param("i",$user_id);
+	$stmt->execute(); 
+    $stmt->bind_result($unique_id);
+    if($stmt->fetch()){
+    	return $unique_id;
+    }else{
+    $stmt->close();
+	$unique_id = uniqid('',true);
+	$stmt = $mysqli->prepare("INSERT INTO `shared_urls`(`unique_id`, `user_id`) VALUES (?,?)");
+	$stmt->bind_param("si", $unique_id, $user_id);
+	if($stmt->execute()){
+		
+		return $unique_id;	
+	}else{
+		return false;
+	}
+	}
 }
 ?>
