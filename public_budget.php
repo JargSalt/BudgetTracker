@@ -42,10 +42,9 @@ if($user_id){
 				<div class='category' id='ctg-<?php echo $category_id?>' category_id="<?php echo $category_id?>" parent_id='<?php echo $parent_id?>' name='<?php echo $category_name?>' goal='<?php echo $category_goal ?>'>
 					<span class="noHide">
                                             <span onclick="alert('this should go to a category specific page')" class="categoryName"><u><?php echo $category_name?></u></span>
-						<span class="categoryAmount">Actual: $<?php  echo get_public_total($category_id)?></span>
-						<button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">show/hide details</button>
+						<button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">show/hide</button>						
 						<span class="categoryGoal">Goal: $<?php echo $category_goal ?></span> 
-					
+						<span class="categoryAmount">Actual: $<?php  echo get_public_total($category_id)?></span>
 						
 					</span>
 				</div>
