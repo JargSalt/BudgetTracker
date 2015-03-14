@@ -54,6 +54,16 @@ function validateTransaction(button) {
 	}
 }
 
+function validateCatEdit(form){
+	validateErrorMessage = "The following fields were entered incorectly: \r\n";
+	if (validateChildren(form)) {
+		return true;
+	} else {
+		alert(validateErrorMessage);
+		return false;
+	}
+}
+
 function validateChildren(element) {
 	var children = element.children;
 	var isValid = true;
@@ -349,7 +359,7 @@ function submitEditCategory(button) {
 	var span = button.parentElement;
 	var spanNoHide = button.parentElement.parentElement;
 
-	if (validateChildren(spanNoHide)) {
+	if (validateCateEdit(spanNoHide)) {
 		var category = button.parentElement.parentElement.parentElement;
 		var category_id = category.getAttribute("category_id");
 		var name = document.getElementById(category_id + "-bigcname").value;
@@ -408,7 +418,7 @@ function createPublicPage(button) {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			var url = document.createElement("P");
 			url.setAttribute("class", "publicUrl");
-			url.innerHTML = "Your public url is: " + xhr.responseText;
+			url.innerHTML = "Your public url is: <a href='" + xhr.responseText +"'>"+xhr.responseText+"</>";
 			parent.appendChild(url);
 			parent.removeChild(button);
 		}
