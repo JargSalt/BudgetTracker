@@ -82,26 +82,26 @@ function validateChildren(element) {
 					Child.style.backgroundColor = "pink";
 					Child.value = null;
 					isValid = false;
-					validateErrorMessage += Child.name + "\n";
+					validateErrorMessage += Child.name + " was entered incorectly. Valid date format is YYYY-MM-DD, only valid dates after 1900 are excepted.\n";
 				}
 			} else if (inClass.toUpperCase() == "NAME") {
 				if (Child.value == "" || Child.value == null) {
 					Child.style.backgroundColor = "pink";
 					Child.value = null;
 					isValid = false;
-					validateErrorMessage += Child.name + "\n";
+					validateErrorMessage += Child.name + " was empty, please enter a name.\n";
 				} else {
 					//Child.style.backgroundColor = "lightGreen";
 				}
 			} else if (inClass.toUpperCase() == "AMOUNT") {
 				regex = /^[0-9]*\.?[0-9]?[0-9?]?$/;
-				if (regex.test(Child.value)) {
+				if (regex.test(Child.value) && Child.value != "" && Child.value != null) {
 					//Child.style.backgroundColor = "lightGreen";
 				} else {
 					Child.style.backgroundColor = "pink";
 					Child.value = null;
 					isValid = false;
-					validateErrorMessage += Child.name + "\n";
+					validateErrorMessage += Child.name + " was inputed wrong. Please enter a number with no more that 2 decimal places.\n";
 				}
 			}
 		} else {
@@ -280,7 +280,7 @@ function cancelCat(button) {
 function showCatForm(button) {
 	var parent = button.parentElement;
 	var catid = 0;
-	parent.innerHTML = "<form method='POST' style='display:inline' action='addcategory.php'><input type='hidden' name='catid' value='" + catid + "'><p>Name: <input type='text' id='" + catid + "-bigcatname' name='" + catid + "-name'></p> <p>Goal: <input type='number' id='" + catid + "-bigcatgoal' name='" + catid + "-goal'></p>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+	parent.innerHTML = "<form onSubmit='return validateChildren(this);' method='POST' style='display:inline' action='addcategory.php'><input type='hidden' name='catid' value='" + catid + "'><p>Name: <input class='name' type='text' id='" + catid + "-bigcatname' name='" + catid + "-name'></p> <p>Goal: <input class='amount' type='text' id='" + catid + "-bigcatgoal' name='" + catid + "-goal'></p>" + "<button id='save' name='save' class='saveButton'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "<button id='cancel' class='cancelButton' onclick='cancelBigCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
 function cancelBigCat(button) {
