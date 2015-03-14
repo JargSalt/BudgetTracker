@@ -237,8 +237,7 @@ function get_public_categories($mysqli, $user_id){
 	return $result_array;
 }
 
-function get_categories($mysqli){
-	$user_id = $_SESSION['user_id'];
+function get_categories($mysqli,$user_id){
 	//prepare query
 	$stmt = $mysqli->prepare("SELECT `category_ID`, `parent_ID`, `category_name`, `category_goal` FROM `categories` WHERE `user_id` = ? order by category_name");
 	$stmt->bind_param('i', $user_id);//use bind_param for better security from sql injections and such

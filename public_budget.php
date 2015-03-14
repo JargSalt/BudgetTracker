@@ -29,6 +29,14 @@ if($user_id){
                 
 			<!-- Here all categories are fetched from the data base -->
             <?php 
+            $categories =  get_categories($mysqli,$user_id);
+            $result = mysqli_query($mysqli, "SELECT SUM(category_goal) AS total_goal FROM categories WHERE parent_ID=0 AND user_id=".$user_id); 
+            $row = mysqli_fetch_assoc($result); 
+            $totalgoal = $row['total_goal'];
+            $result2 = mysqli_query($mysqli, "SELECT SUM(transaction_amount) AS total_spent FROM transactions WHERE user_id=".$user_id); 
+            $row2 = mysqli_fetch_assoc($result2); 
+            $totalspent = $row2['total_spent'];
+
             $categories = get_public_categories($mysqli, $user_id);
 			//print_r($categories);
 			for($i = 0; $i < count($categories); ++$i):
@@ -52,11 +60,11 @@ if($user_id){
 			</div>
                         <div class="container" id="sidebar">
 			<div class="container" id="aggregates">
-				<h1>This Months Info:</h1>
+				<h1>Budget Info:</h1>
 				<ul>
-					<li>Total budget:</li>
-					<li>Total spent:</li>
-					<li>Most expensive category:</li>
+					<li>Total budget: $<?php echo $totalgoal ?></li>
+					<li>Total spent: $<?php echo $totalspent ?></li>
+
 				</ul>
 			</div>
 			           <div class="container" id="changeColor">

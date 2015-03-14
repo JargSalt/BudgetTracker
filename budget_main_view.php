@@ -29,7 +29,7 @@ sec_session_start();
           
 			<!-- Here all categories are fetched from the data base -->
             <?php 
-            $categories =  get_categories($mysqli);
+            $categories =  get_categories($mysqli,$_SESSION['user_id']);
             $result = mysqli_query($mysqli, "SELECT SUM(category_goal) AS total_goal FROM categories WHERE parent_ID=0 AND user_id=".$_SESSION['user_id']); 
             $row = mysqli_fetch_assoc($result); 
             $totalgoal = $row['total_goal'];
