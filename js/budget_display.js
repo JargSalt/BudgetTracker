@@ -336,8 +336,8 @@ function showBigCategoryForm(button) {
 	newgoal.setAttribute("class", "categoryGoal");
 	spandiv.appendChild(newname);
 	spandiv.appendChild(newgoal);
-	newname.innerHTML = "Name: <input class='name' type='text' value='" + catName + "' id='" + categoryid + "-bigcname'>";
-	newgoal.innerHTML = "Goal: <input class='amount' type='text' value='" + catGoal + "' id='" + categoryid + "-bigcgoal'>";
+	newname.innerHTML = "Name: <input name='Category Name' class='name' type='text' value='" + catName + "' id='" + categoryid + "-bigcname'>";
+	newgoal.innerHTML = "Goal: <input name='Category Goal' class='amount' type='text' value='" + catGoal + "' id='" + categoryid + "-bigcgoal'>";
 	span.innerHTML = '<button class="saveButton" onclick="submitEditCategory(this)"><img src="resources/images/checkmark.png" height="15px" /></button><button class="cancelButton" onclick="cancelCategoryEdit(this)"><img src="resources/images/x.png" height="15px" /></button>';
 	_newCatName[category.getAttribute('category_id')] = newname;
 	_newCatGoal[category.getAttribute('category_id')] = newgoal;
@@ -359,7 +359,7 @@ function submitEditCategory(button) {
 	var span = button.parentElement;
 	var spanNoHide = button.parentElement.parentElement;
 
-	if (validateCateEdit(spanNoHide)) {
+	if (validateCatEdit(spanNoHide)) {
 		var category = button.parentElement.parentElement.parentElement;
 		var category_id = category.getAttribute("category_id");
 		var name = document.getElementById(category_id + "-bigcname").value;
