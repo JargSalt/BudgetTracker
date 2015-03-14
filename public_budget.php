@@ -50,15 +50,16 @@ if($user_id){
 				</div>
 			<?php  endfor;?>
 			</div>
+                        <div class="container" id="sidebar">
 			<div class="container" id="aggregates">
 				<h1>This Months Info:</h1>
 				<ul>
 					<li>Total budget:</li>
 					<li>Total spent:</li>
-					<li>Most expensive transaction:</li>
 					<li>Most expensive category:</li>
 				</ul>
 			</div>
+                        </div>
 			</div>
 
 <?php }else{ echo "<p>The id is not valid!</p>"; }

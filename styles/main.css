@@ -114,18 +114,14 @@ button.random {
 
 .categoryGoal {
     position: relative;
-    left: 55%;
+    float: right;
 }
 
 .categoryAmount {
     position: relative;
-    left: 35%;
-}
-
-.categoryEdit {
     float: right;
-    margin-left:2px;
-    margin-right:2px;
+    margin-right:5px;
+    margin-left: 5px;
 }
 
 .categoryDelete {
@@ -134,16 +130,25 @@ button.random {
     margin-right:2px;
 }
 
+.categoryEdit {
+    float: right;
+    margin-left:2px;
+    margin-right:2px;
+    margin-right:5px;
+    margin-left: 5px;
+}
+
 .endOfCtg {
-    width:100%;
+    display: block;
     text-align: center;
+    width:100%;
 }
 
 button.categoryShowHide {
     float: right;
     margin-left:2px;
     margin-right:2px;
-    height: 20px;
+    height: 25px;
 }
 
 .editButton,.deleteButton,.newButton {

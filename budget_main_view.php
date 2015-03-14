@@ -42,11 +42,11 @@ sec_session_start();
 				<div class='category' id='ctg-<?php echo $category_id?>' category_id="<?php echo $category_id?>" parent_id='<?php echo $parent_id?>' name='<?php echo $category_name?>' goal='<?php echo $category_goal ?>'>
 					<span class="noHide">
                                             <span onclick="alert('this should go to a category specific page')" class="categoryName"><u><?php echo $category_name?></u></span>
-						<span class="categoryGoal">Goal: $<?php echo $category_goal ?></span> 
-						<span class="categoryAmount">Actual: $?</span>
-						<span class="categoryEdit"><button class="editButton" onclick="showBigCategoryForm(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></span>
-                                                <span class="categoryDelete"><button class="deleteButton" onclick="deleteBigCategory(this)"><img src='resources/images/trashcan.png' height='15px' /></button></span>
-						<button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">Show/Hide</button>
+                                            <button class="categoryShowHide" onclick="showHideCategory('ctg-<?php echo $category_id?>')">Show/Hide</button>
+                                            <span class="categoryDelete"><button class="deleteButton" onclick="deleteBigCategory(this)"><img src='resources/images/trashcan.png' height='15px' /></button></span>
+                                            <span class="categoryEdit"><button class="editButton" onclick="showBigCategoryForm(this)"><img src='resources/images/edit-icon.png' height='15px' /></button></span>
+                                            <span class="categoryAmount">Actual: $?</span>
+                                            <span class="categoryGoal">Goal: $<?php echo $category_goal ?></span> 
 					</span>
 					<table class="transaction_table" id="ttbl-<?php echo $category_id ?>">
 						<tr>
