@@ -241,7 +241,7 @@ function showSubCatForm(button) {
 	var parent = button.parentElement;
 	var category = parent.parentElement;
 	var catid = category.getAttribute("category_id");
-	parent.innerHTML = "<form method='POST' action='addcategory.php' style='display:inline'><input type='hidden' name='catid' value='" + catid + "'> Name: <input type='text' id='" + catid + "-newcatname' name='" + catid + "-name'> Goal: <input type='number' id='" + catid + "-newcatgoal' name='" + catid + "-goal'>" + "    <button id='save' class='saveButton' name='save'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "    <button id='cancel' class='cancelButton' onclick='cancelCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
+	parent.innerHTML = "<form method='POST' onSubmit='return validateChildren(this);' action='addcategory.php' style='display:inline'><input type='hidden' name='catid' value='" + catid + "'> Name: <input class='name' type='text' id='" + catid + "-newcatname' name='" + catid + "-name'> Goal: <input class='amount' type='text' id='" + catid + "-newcatgoal' name='" + catid + "-goal'>" + "    <button id='save' class='saveButton' name='save'><img src='resources/images/checkmark.png' height='15px'/></button></form>" + "    <button id='cancel' class='cancelButton' onclick='cancelCat(this)'><img src='resources/images/x.png' height='15px' /></button>";
 }
 
 function addCat(button) {
