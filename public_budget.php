@@ -59,6 +59,15 @@ if($user_id){
 					<li>Most expensive category:</li>
 				</ul>
 			</div>
+			           <div class="container" id="changeColor">
+                    Change Color scheme: 
+                    <select name="colors" onchange='changeColor(this);'>
+						<option value="#009933">Green</option>
+						<option value="#0000FF">Blue</option>
+						<option value="#FF99FF">Pink</option>
+						<option value="#FF0000">Red</option>
+					</select>
+            </div>
                         </div>
 			</div>
 

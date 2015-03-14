@@ -1,5 +1,6 @@
 body {
-    background-color: green;
+    background-color: #009933;
+    color: #009933;
 }
 
 #containers {
@@ -25,30 +26,17 @@ body {
     text-align: left;
 }
 
-#aggregates{
-    color: green;
-    background-color: white;
-    border: solid white;
-    padding: 5px;
-    margin-bottom: 5px;
-}
 
-#newcategory {
-    color: green;
-    padding: 5px;
-    text-align: center;
-    background-color: white;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-#containers #createPublicPage {
-    color: green;
+#sidebar > div {
     padding: 5px;
     text-align: center;
     margin-top: 5px;
     background-color: white;
 }
+
+
+
+
 
 button.random {
     position: relative;
@@ -67,7 +55,6 @@ button.random {
     background-color: white;
     border: 2px solid black;
     border-radius: 5px;
-    color: green;
     padding: 5px;
     margin-left: 5px;
     margin-top: 5px;
@@ -82,7 +69,6 @@ button.random {
 #header {
     position: static;
     background-color: white;
-    color: green;
     text-align: center;
     border: 4px solid;
     border-radius: 10px;
@@ -96,7 +82,6 @@ button.random {
 #header span{
     display: inline-block;
     vertical-align: middle;
-    color: green;
     font-family: Georgia, serif;
     font-size: 46px;
     text-align: center;
@@ -157,4 +142,9 @@ button.categoryShowHide {
 
 img {
     margin:0px;
+}
+
+
+#aggregates {
+	text-align: left;
 }

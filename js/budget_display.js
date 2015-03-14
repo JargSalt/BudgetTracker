@@ -429,5 +429,11 @@ function createPublicPage(button) {
 
 }
 
+function changeColor(select){
+	var color = select.value;
+	document.body.style.background = color;
+	document.body.style.color = color;
+}
+
 ;
 
