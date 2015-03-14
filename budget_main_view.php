@@ -30,6 +30,16 @@ sec_session_start();
 			<!-- Here all categories are fetched from the data base -->
             <?php 
             $categories =  get_categories($mysqli);
+            $result = mysqli_query($mysqli, "SELECT SUM(category_goal) AS total_goal FROM categories WHERE parent_ID=0 AND user_id=".$_SESSION['user_id']); 
+            $row = mysqli_fetch_assoc($result); 
+            $totalgoal = $row['total_goal'];
+            $result2 = mysqli_query($mysqli, "SELECT SUM(transaction_amount) AS total_spent FROM transactions WHERE user_id=".$_SESSION['user_id']); 
+            $row2 = mysqli_fetch_assoc($result2); 
+            $totalspent = $row2['total_spent'];
+            $result3 = mysqli_query($mysqli, "SELECT MAX(transaction_amount) AS max_spent FROM transactions WHERE user_id=".$_SESSION['user_id']); 
+            $row3 = mysqli_fetch_assoc($result3); 
+            $maxspent = $row3['max_spent'];
+
 			//print_r($categories);
 			for($i = 0; $i < count($categories); ++$i):
 				$category_id = $categories[$i]['category_id'];
@@ -95,12 +105,11 @@ sec_session_start();
 			</div>
             <div class="container" id="sidebar">
             <div class="container" id="aggregates">
-		<h1>This Months Info:</h1>
+		<h1>Budget Info:</h1>
 		<ul>
-                    <li>Total budget:</li>
-                    <li>Total spent:</li>
-                    <li>Most expensive transaction:</li>
-                    <li>Most expensive category:</li>
+                    <li>Total budget: $<?php echo $totalgoal ?></li>
+                    <li>Total spent: $<?php echo $totalspent ?></li>
+                    <li>Most expensive transaction: $<?php echo $maxspent ?></li>
 		</ul>
             </div>
             <div class="container" id="newcategory">
@@ -128,6 +137,6 @@ sec_session_start();
                 <span class="error">You are not authorized to access this page.</span> Please <a href="index.php">login</a>.
             </p>
         <?php endif; ?>
-      
+
     </body>
 </html>
