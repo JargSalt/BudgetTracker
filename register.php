@@ -26,6 +26,8 @@ include_once 'includes/functions.php';
             echo $error_msg;
         }
         ?>
+        <div id="container">
+        <div id="formcontainer">
         <div id='rform'>
         <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" 
                 method="post" 
@@ -43,7 +45,11 @@ include_once 'includes/functions.php';
                                    this.form.confirmpwd);" /> 
         </form>
         </div>
+        </div>
+        <div id="criteriadiv">
         <div id='criteria'><span>Welcome!</span></div>
+        </div>
+        </div>
         <script>
             function inform(val) {
                 var x = val;
@@ -55,10 +61,10 @@ include_once 'includes/functions.php';
                         document.getElementById("criteria").innerHTML = "<span>Emails must have a valid email format.</span>";
                         break;
                     case 3:
-                        document.getElementById("criteria").innerHTML = "<span>Passwords must be at least 6 characters long, and contain:<br><br>"+
-                                                              "At least one uppercase letter (A..Z)<br>"+
-                                                              "At least one lowercase letter (a..z)<br>"+
-                                                              "At least one number (0..9)<br></span>";
+                        document.getElementById("criteria").innerHTML = "<span>Passwords must be at least 6 characters long, and contain:<br>"+
+                                                              "At least one uppercase letter (A-Z)<br>"+
+                                                              "At least one lowercase letter (a-z)<br>"+
+                                                              "At least one number (0-9)<br></span>";
                         break;
                     default:
                         document.getElementById("criteria").innerHTML = "";
